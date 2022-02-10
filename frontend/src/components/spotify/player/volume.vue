@@ -16,7 +16,7 @@ export default {
   },
   watch: {
     changeVolume(value) {
-      axios.get("http://localhost:8080/volume", {params: {volume: value}} )
+      axios.get("http://localhost:3000/volume", {params: {volume: value}} )
     }
   }
 }

@@ -50,7 +50,6 @@ html, body, #app>div {
 
 
 .column.left {
-  min-width: 200px;
   width: 17%;
   background-color: aquamarine;
 }

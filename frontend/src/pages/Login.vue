@@ -1,34 +1,29 @@
 <template>
-  <div>
-    <button @click="loginSpotify">login with spotify</button>
+  <div class="LoginPage">
+    <login-button></login-button>
   </div>
 </template>
 
-
 <script>
+import LoginButton from "@/components/login/LoginButton";
 
 export default {
-  methods:{
-    // redirect spotify login page
-    loginSpotify(){
-      const url = "https://accounts.spotify.com/authorize";
-
-      let params = {
-        response_type: "code",
-        client_id: "d97ea09987ab46c2bb0b4fa4eaae55e1",
-        scope:
-            "user-read-private user-read-email playlist-modify-private playlist-read-collaborative playlist-read-private playlist-modify-public user-read-recently-played user-top-read user-read-playback-position user-read-playback-state user-modify-playback-state user-modify-playback-state",
-        redirect_uri: "http://localhost:8080/token",
-        show_dialog: true,
-      };
-      params = new URLSearchParams(params).toString();
-      window.location.href = `${url}?${params}`;
+  components: {
+    LoginButton
+  },
+  data() {
+    return {
+      page: LoginButton
     }
   }
 }
-
 </script>
 
 <style>
+.LoginPage{
+  position: relative;
+  height: 89%;
+
+}
 
 </style>

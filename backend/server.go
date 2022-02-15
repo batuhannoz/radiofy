@@ -32,6 +32,17 @@ const (
 )
 
 func main() {
+	dbUser := ""
+	dbPass := ""
+	dbHost := ""
+	dbPort := ""
+	dbName := ""
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbPort, dbName)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		fmt.Println(err)
+	}
 	r := gin.Default()
 	r.GET("/play", StartResume)
 	r.GET("/pause", Pause)
@@ -104,21 +115,7 @@ func AddUser(gin *gin.Context) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(c.Country)
-	fmt.Println(c.DisplayName)
-	fmt.Println(c.Email)
-	fmt.Println(c.Images[0].Url)
-	dbUser := ""
-	dbPass := ""
-	dbHost := ""
-	dbPort := ""
-	dbName := ""
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbPort, dbName)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic("Failed to create a connection to database")
-	}
 	user_info := UserInfo{
 		DisplayName:    c.DisplayName,
 		Mail:           c.Email,
@@ -127,5 +124,4 @@ func AddUser(gin *gin.Context) {
 	}
 	db.Save(&user_info)
 
-	fmt.Println(user_info)
 }

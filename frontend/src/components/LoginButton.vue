@@ -1,6 +1,6 @@
 <template>
   <div class="justify-center text-center">
-    <button class="px-4 py-2 bg-SpotifyGreen hover:opacity-60 rounded-full" @click="loginSpotify">Login With Spotify</button>
+    <button class="px-4 py-2 bg-SpotifyGreen hover:scale-105 rounded-full" @click="loginSpotify">Login With Spotify</button>
   </div>
 </template>
 

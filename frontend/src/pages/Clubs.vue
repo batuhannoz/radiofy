@@ -1,92 +1,7 @@
 <template>
-  <div class="mid-container">
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-    <li>abc</li>
-    <li>def</li>
-    <li>ghi</li>
-  </div>
+    <div class="text-white">
+      Clubs
+    </div>
 </template>
 
 <script>
@@ -97,7 +12,6 @@ export default {
   beforeCreate() {
     if (VueCookies.get("access_token")) {
       setAccessToken()
-      console.log("logged in spotify")
     }else{
       this.$router.replace('/login')
     }
@@ -106,11 +20,5 @@ export default {
 </script>
 
 <style>
-
-.mid-container{
-  flex-wrap: wrap;
-  overflow-y: auto;
-  height: 89%;
-}
 
 </style>

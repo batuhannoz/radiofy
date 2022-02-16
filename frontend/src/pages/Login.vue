@@ -1,29 +1,18 @@
 <template>
-  <div class="LoginPage">
-    <login-button></login-button>
+  <div class="text-white flex items-center">
+    <login-button ></login-button>
   </div>
 </template>
 
 <script>
-import LoginButton from "@/components/login/LoginButton";
-
+import loginButton from "@/components/LoginButton";
 export default {
-  components: {
-    LoginButton
-  },
-  data() {
-    return {
-      page: LoginButton
-    }
-  }
+ components: {
+   loginButton,
+ }
 }
 </script>
 
 <style>
-.LoginPage{
-  position: relative;
-  height: 89%;
-
-}
 
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="LoginButton">
-    <button @click="loginSpotify">Login With Spotify</button>
+  <div class="justify-center text-center" >
+    <button class="px-4 py-2 bg-SpotifyGreen rounded-full" @click="loginSpotify">Login With Spotify</button>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
         scope:
             "user-read-private user-read-email playlist-modify-private playlist-read-collaborative playlist-read-private playlist-modify-public user-read-recently-played user-top-read user-read-playback-position user-read-playback-state user-modify-playback-state user-modify-playback-state",
         redirect_uri: "http://localhost:8080/token",
-        show_dialog: false,
+        show_dialog: true,
       };
       params = new URLSearchParams(params).toString();
       window.location.href = `${url}?${params}`;
@@ -26,13 +26,5 @@ export default {
 </script>
 
 <style>
-.LoginButton{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
 
 </style>

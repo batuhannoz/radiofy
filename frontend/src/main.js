@@ -6,6 +6,7 @@ import App from './App.vue';
 
 import { VuesticPlugin } from "vuestic-ui"
 import 'vuestic-ui/dist/vuestic-ui.css'
+import './assets/tailwind.css'
 
 
 const app = createApp(App);

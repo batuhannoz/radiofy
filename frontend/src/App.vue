@@ -17,6 +17,7 @@
 <script>
 import ActiveUsers from "./components/social/ActiveUsers.vue"
 import Playback from "./components/playback.vue"
+
 export default {
   components: {
     ActiveUsers,

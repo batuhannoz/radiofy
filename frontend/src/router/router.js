@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import Token from '../pages/Token.vue'
-import Login from "@/pages/Login";
 import MainPage from '../pages/Clubs'
+import Login from "@/pages/Login";
 const router = createRouter({
     history: createWebHistory(),
     routes: [

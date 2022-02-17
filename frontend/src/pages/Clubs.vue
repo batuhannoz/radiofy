@@ -1,47 +1,131 @@
 <template>
     <div class="text-white flex flex-wrap overflow-y-auto scroller">
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-purple-700"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-SpotifyGreen"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-blue-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-green-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-pink-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-purple-700"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-SpotifyGreen"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-blue-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-green-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-pink-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-purple-700"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-SpotifyGreen"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-blue-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-green-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-pink-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-purple-700"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-SpotifyGreen"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-blue-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-green-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-pink-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-purple-700"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-SpotifyGreen"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-blue-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-green-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-pink-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-purple-700"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-SpotifyGreen"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-blue-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-green-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-pink-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-SpotifyGreen"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-blue-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-green-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-pink-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-SpotifyGreen"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-blue-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-green-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-pink-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-SpotifyGreen"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-blue-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-green-600"></div>
-      <div class="flex-initial m-auto my-6 aspect-square h-40 w-40 bg-pink-600"></div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
+      <div class="flex-initial flex flex-col m-auto my-6 aspect-square h-56 w-40 bg-SpotifyPlayer rounded-lg p-4">
+        <div>
+          <img src="https://i.scdn.co/image/ab67706c0000da84443715c10bcde6c10f733874" class="rounded-md"/>
+        </div>
+        <p class="text-center justify-center">
+          werwereqw
+          qweqwe
+        </p>
+      </div>
     </div>
 </template>
 

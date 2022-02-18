@@ -61,5 +61,9 @@ export const shuffle = (state) => {
 }
 
 export const repeat = (state) => {
-        return  spotifyApi.setRepeat(state)
+    return spotifyApi.setRepeat(state)
+}
+
+export const setVolume = (volume) => {
+    return spotifyApi.setVolume(volume)
 }

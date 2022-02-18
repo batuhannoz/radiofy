@@ -1,5 +1,5 @@
 <template>
-  <div class="justify-center text-center">
+  <div class="text-center">
     <button class="px-4 py-2 bg-SpotifyGreen hover:scale-105 rounded-full" @click="loginSpotify">Login With Spotify</button>
   </div>
 </template>

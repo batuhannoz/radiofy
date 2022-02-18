@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white flex items-center">
+  <div class="text-white flex justify-center items-center">
     <login-button ></login-button>
   </div>
 </template>

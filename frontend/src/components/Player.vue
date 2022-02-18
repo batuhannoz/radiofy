@@ -1,7 +1,7 @@
 <template>
   <div class="bg-SpotifyPlayer text-white flex justify-between ">
     <div class="flex-grow-0 " style="height: 92px; width: 134px;">
-      <img style="height: 92px; width: 92px;" src="https://i.scdn.co/image/ab67616d00001e02e4c3db3e7ebfc22bc080f334">
+      <img style="height: 92px; width: 92px;" v-bind:src="CurrentImage">
     </div>
     <div class="flex-grow-0 flex flex-col w-[45%] justify-center" style="max-width: 720px;">
       <div class="flex gap-x-2 mb-2 justify-center flex-grow-0">
@@ -9,14 +9,14 @@
           <ShuffleIcon v-if="isShuffle" class="text-SpotifyGreen"/>
           <ShuffleIcon v-else class="text-[#b3b3b3]"/>
         </button>
-        <button @click="SkipToPrev" class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]" >
+        <button @click="SkipToPrev" class="hover:scale-[1.06] hover:text-white w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]" >
           <previous/>
         </button>
         <button @click="PlayPause" class="bg-white text-black hover:scale-[1.06] rounded-full w-8 h-8 flex-grow-0 flex justify-center items-center">
           <stop-icon v-if="isPlay"/>
           <play-icon v-else/>
         </button>
-        <button @click="SkipToNext" class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
+        <button @click="SkipToNext" class="hover:scale-[1.06] hover:text-white w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
           <next/>
         </button>
         <button @click="Repeat" class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
@@ -31,6 +31,7 @@
         <div class="flex-grow">
           <vue-slider
               v-model="progress"
+              :tooltip="'none'"
               :dot-size="15"
               :process-style="{ background: '#1db954' }"
               :bg-style="{ background: '#737575' }"
@@ -41,7 +42,7 @@
     </div>
     <div class="flex-grow-0 flex items-center mr-2 text-center" style="height: 92px; width: 134px;">
       <div class="flex-grow flex flex-nowrap items-center">
-        <button @click="SetMute" class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
+        <button @click="SetMute" class="hover:scale-[1.06] hover:text-white w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
           <mute-icon v-if="Volume===0"/>
           <VolumeLow v-else-if="Volume < 33"/>
           <VolumeMid v-else-if="Volume < 66"/>
@@ -76,6 +77,7 @@ import VolumeLow from './Icons/VolumeLow.vue'
 import VolumeMid from './Icons/VolumeMid.vue'
 
 import {
+  getCurrentState,
   setVolume,
   repeat,
   shuffle,
@@ -104,47 +106,60 @@ export default {
       isPlay: false,
       isShuffle: false,
       isRepeat: false,
-      Volume: 50
+      Volume: 50,
+      CurrentImage: null
     }
   },
-  methods:{
-    PlayPause(){
-      if (this.isPlay){
+  methods: {
+    PlayPause() {
+      if (this.isPlay) {
         pause()
         this.isPlay = false
-      }else {
+      } else {
         play()
         this.isPlay = true
       }
+      this.refreshPlayback()
     },
     SkipToPrev() {
       skipToPrevious()
+      this.refreshPlayback()
     },
     SkipToNext() {
       skipToNext()
+      this.refreshPlayback()
     },
-    Shuffle(){
-      shuffle(!this.isShuffle)
+    Shuffle() {
+      shuffle(!this.isShuffle).then()
       this.isShuffle = !this.isShuffle
+      this.refreshPlayback()
     },
-    Repeat(){
+    Repeat() {
       if (this.isRepeat) {
         repeat('off')
       } else {
         repeat('track')
       }
       this.isRepeat = !this.isRepeat
+      this.refreshPlayback()
     },
     SetMute() {
       this.Volume = 0
-    }
-  },
-  watch: {
-    Volume(vol) {
-      setVolume(vol)
+      this.refreshPlayback()
+    },
+    refreshPlayback() {
+      setTimeout(() => {
+        getCurrentState().then((res) => {
+          this.CurrentImage = res.item.album.images[1].url
+        })
+      }, 1000)
+    },
+    watch: {
+      Volume(vol) {
+        setVolume(vol)
+        this.refreshPlayback()
+      }
     }
   }
 }
-
-
 </script>

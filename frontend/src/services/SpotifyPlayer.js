@@ -67,3 +67,7 @@ export const repeat = (state) => {
 export const setVolume = (volume) => {
     return spotifyApi.setVolume(volume)
 }
+
+export const getCurrentState = () => {
+    return spotifyApi.getMyCurrentPlaybackState()
+}

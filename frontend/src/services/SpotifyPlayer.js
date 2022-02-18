@@ -56,3 +56,10 @@ export const skipToNext = () => {
     return spotifyApi.skipToNext();
 };
 
+export const shuffle = (state) => {
+    return spotifyApi.setShuffle(state)
+}
+
+export const repeat = (state) => {
+        return  spotifyApi.setRepeat(state)
+}

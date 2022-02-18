@@ -5,20 +5,23 @@
     </div>
     <div class="flex-grow-0 flex flex-col w-[45%] justify-center" style="max-width: 720px;">
       <div class="flex gap-x-2 mb-2 justify-center flex-grow-0">
-        <button class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
-          <ShuffleIcon/>
+        <button @click="Shuffle" class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center">
+          <ShuffleIcon v-if="isShuffle" class="text-SpotifyGreen"/>
+          <ShuffleIcon v-else class="text-[#b3b3b3]"/>
         </button>
-        <button class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]" >
+        <button @click="SkipToPrev" class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]" >
           <previous/>
         </button>
-        <button class="bg-white text-black hover:scale-[1.06] rounded-full w-8 h-8 flex-grow-0 flex justify-center items-center">
-          <stop-icon/>
+        <button @click="PlayPause" class="bg-white text-black hover:scale-[1.06] rounded-full w-8 h-8 flex-grow-0 flex justify-center items-center">
+          <stop-icon v-if="isPlay"/>
+          <play-icon v-else/>
         </button>
-        <button class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
+        <button @click="SkipToNext" class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
           <next/>
         </button>
-        <button class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
-          <repeat-icon/>
+        <button @click="Repeat" class="hover:scale-[1.06] w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
+          <repeat-icon v-if="isRepeat" class="text-SpotifyGreen"/>
+          <repeat-icon v-else class="text-[#b3b3b3]" />
         </button>
       </div>
       <div class="w-full flex items-center mt-1.5 flex-grow-0 gap-x-2">
@@ -48,26 +51,65 @@
 <script>
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
-//import PlayIcon from './Icons/PlayIcon.vue'
+import PlayIcon from './Icons/PlayIcon.vue'
 import ShuffleIcon from './Icons/ShuffleIcon'
 import StopIcon from './Icons/StopIcon.vue'
 import Previous from "./Icons/PreviousIcon";
 import Next from "./Icons/Next";
 import RepeatIcon from './Icons/RepeatIcon.vue'
+import {
+  repeat,
+  shuffle,
+  skipToPrevious,
+  skipToNext,
+  pause,
+  play,
+} from "@/services/SpotifyPlayer";
 export default {
   components: {
     Next,
     Previous,
-    //PlayIcon,
+    PlayIcon,
     StopIcon,
     RepeatIcon,
     ShuffleIcon,
     VueSlider
-
   },
   data() {
     return {
-      progress: 0
+      progress: 0,
+      isPlay: false,
+      isShuffle: false,
+      isRepeat: false
+    }
+  },
+  methods:{
+    PlayPause(){
+      if (this.isPlay){
+        pause()
+        this.isPlay = false
+      }else {
+        play()
+        this.isPlay = true
+      }
+    },
+    SkipToPrev() {
+      skipToPrevious()
+    },
+    SkipToNext() {
+      skipToNext()
+    },
+    Shuffle(){
+      shuffle(!this.isShuffle)
+      this.isShuffle = !this.isShuffle
+    },
+    Repeat(){
+      if (this.isRepeat) {
+        repeat('off')
+      } else {
+        repeat('track')
+      }
+      this.isRepeat = !this.isRepeat
     }
   }
 }

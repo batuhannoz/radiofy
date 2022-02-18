@@ -25,7 +25,15 @@
         <!--instant music duration-->
         <div class="text-[0.688rem] text-white text-opacity-70">00:00</div>
         <!--slider-->
-
+        <div class="flex-grow">
+          <vue-slider
+              v-model="progress"
+              :tooltip="false"
+              :dot-size="15"
+              :process-style="{ background: '#1db954' }"
+              :bg-style="{ background: '#737575' }"
+          ></vue-slider>
+          </div>
         <!--total music duration-->
         <div class="text-[0.688rem] text-white text-opacity-70">00:00</div></div>
     </div>
@@ -38,7 +46,8 @@
 
 
 <script>
-
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
 //import PlayIcon from './Icons/PlayIcon.vue'
 import ShuffleIcon from './Icons/ShuffleIcon'
 import StopIcon from './Icons/StopIcon.vue'
@@ -53,6 +62,7 @@ export default {
     StopIcon,
     RepeatIcon,
     ShuffleIcon,
+    VueSlider
 
   },
   data() {

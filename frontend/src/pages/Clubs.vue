@@ -119,7 +119,7 @@ export default {
     }else{
       this.$router.replace('/login')
     }
-  }
+  },
 }
 </script>
 

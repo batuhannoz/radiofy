@@ -56,7 +56,7 @@ export const skipToNext = () => {
     return spotifyApi.skipToNext();
 };
 
-export const shuffle = (state) => {
+export const setShuffle = (state) => {
     return spotifyApi.setShuffle(state)
 }
 
@@ -71,3 +71,9 @@ export const setVolume = (volume) => {
 export const getCurrentState = () => {
     return spotifyApi.getMyCurrentPlaybackState()
 }
+
+export const seekThePosition = (position) => {
+    return spotifyApi.seek(position)
+}
+
+

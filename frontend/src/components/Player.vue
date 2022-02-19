@@ -1,7 +1,7 @@
 <template>
   <div class="bg-SpotifyPlayer text-white flex justify-between ">
     <div class="flex-grow-0 " style="height: 92px; width: 134px;">
-      <img style="height: 92px; width: 92px;" v-bind:src="CurrentImage">
+      <img style="height: 92px; width: 92px;" v-bind:src="CurrentSongImage">
     </div>
     <div class="flex-grow-0 flex flex-col w-[45%] justify-center" style="max-width: 720px;">
       <div class="flex gap-x-2 mb-2 justify-center flex-grow-0">
@@ -43,7 +43,7 @@
     <div class="flex-grow-0 flex items-center mr-2 text-center" style="height: 92px; width: 134px;">
       <div class="flex-grow flex flex-nowrap items-center">
         <button @click="SetMute" class="hover:scale-[1.06] hover:text-white w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
-          <mute-icon v-if="Volume===0"/>
+          <mute-icon v-if="Volume === 0"/>
           <VolumeLow v-else-if="Volume < 33"/>
           <VolumeMid v-else-if="Volume < 66"/>
           <VolumeHigh v-else/>
@@ -65,6 +65,7 @@
 <script>
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
+
 import PlayIcon from './Icons/PlayIcon.vue'
 import ShuffleIcon from './Icons/ShuffleIcon'
 import StopIcon from './Icons/StopIcon.vue'
@@ -75,6 +76,8 @@ import VolumeHigh from './Icons/VolumeHigh.vue'
 import MuteIcon from './Icons/MuteIcon.vue'
 import VolumeLow from './Icons/VolumeLow.vue'
 import VolumeMid from './Icons/VolumeMid.vue'
+
+import {mapGetters, mapActions} from 'vuex'
 
 import {
   getCurrentState,
@@ -100,6 +103,11 @@ export default {
     VolumeLow,
     VolumeMid
   },
+  computed: {
+    ...mapGetters([
+        "CurrentSongImage"
+    ])
+  },
   data() {
     return {
       progress: 0,
@@ -107,10 +115,17 @@ export default {
       isShuffle: false,
       isRepeat: false,
       Volume: 50,
-      CurrentImage: null
+    }
+  },
+  watch: {
+    Volume(vol) {
+      setVolume(vol)
     }
   },
   methods: {
+    ...mapActions([
+      "ChangeCurrentImage"
+    ]),
     PlayPause() {
       if (this.isPlay) {
         pause()
@@ -150,16 +165,10 @@ export default {
     refreshPlayback() {
       setTimeout(() => {
         getCurrentState().then((res) => {
-          this.CurrentImage = res.item.album.images[1].url
+          this.ChangeCurrentImage(res.item.album.images[1].url)
         })
       }, 1000)
     },
-    watch: {
-      Volume(vol) {
-        setVolume(vol)
-        this.refreshPlayback()
-      }
-    }
   }
 }
 </script>

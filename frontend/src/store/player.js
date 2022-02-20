@@ -119,7 +119,10 @@ const store = createStore({
         ChangeDurationMS(context, DurationMS) {
             context.commit('ChangeDurationMS', DurationMS);
         },
-        ChangeProgressMS(context, ProgressMS) {
+        ChangeProgressMsStore(context, ProgressMS) {
+            context.commit('ChangeProgressMS', ProgressMS);
+        },
+        ChangeProgressMsSpotify(context, ProgressMS) {
             seekThePosition(ProgressMS);
             context.commit('ChangeProgressMS', ProgressMS);
         },
@@ -129,11 +132,11 @@ const store = createStore({
         },
         EnableRepeat(context) {
             repeat('track');
-            context.commit('ChangeIsRepeat', true);
+            context.commit('ChangeIsRepeat', 'track');
         },
         DisableRepeat(context) {
             repeat('off');
-            context.commit('ChangeIsRepeat',false);
+            context.commit('ChangeIsRepeat', 'off');
         },
         RefreshPlayer(context) {
             getCurrentState().then((res) => {

@@ -84,12 +84,8 @@ import VolumeMid from './Icons/VolumeMid.vue'
 import {mapGetters, mapActions} from 'vuex'
 
 import {
-  repeat,
-  setShuffle,
   skipToPrevious,
   skipToNext,
-  pause,
-  play,
 } from "@/services/SpotifyPlayer";
 export default {
   components: {
@@ -118,24 +114,56 @@ export default {
         "GetSongName"
     ])
   },
+  created() {
+    this.RefreshPlayer()
+    this.UpdateProgress()
+  },
   data() {
     return {
+      ProgressInterval: null,
       IsDrag: false,
       Progress: 0,
       Volume: 50,
     }
   },
+  ...mapGetters([
+    "GetImage",
+    "GetIsShuffle",
+    "GetIsPlay",
+    "GetIsRepeat",
+  ]),
   watch: {
-
+    Volume(vol) {
+      this.ChangeVolume(vol)
+    }
   },
   methods: {
     ...mapActions([
         "ChangeImage",
-        "ChangeProgressMS",
-        "RefreshPlayer"
+        "ChangeProgressMsStore",
+        "ChangeProgressMsSpotify",
+        "RefreshPlayer",
+        "PlaySong",
+        "PauseSong",
+        "EnableShuffle",
+        "DisableShuffle",
+        "EnableRepeat",
+        "DisableRepeat",
+        "ChangeVolume"
     ]),
+
+    UpdateProgress() {
+      clearInterval(this.ProgressInterval)
+      if (this.GetIsPlay) {
+        this.ProgressInterval = setInterval(() => {
+          this.Progress = this.Progress + 1000
+          this.ChangeProgressMsStore(this.Progress)
+        }, 1000)
+      }
+
+    },
     ClickChange(){
-      this.ChangeProgressMS(this.Progress)
+      this.ChangeProgressMsSpotify(this.Progress)
     },
     DragStart(){
       this.IsDrag = true
@@ -146,36 +174,44 @@ export default {
     },
     SkipToPrev() {
       skipToPrevious()
+      this.RefreshPlayer()
+      this.UpdateProgress()
     },
     SkipToNext() {
       skipToNext()
       this.RefreshPlayer()
-      console.log(this.GetImage)
+      this.UpdateProgress()
+
     },
     PlayPause() {
       if (this.GetIsPlay) {
-        pause()
-        this.isPlay = false
+        this.PauseSong()
       } else {
-        play()
-        this.isPlay = true
+        this.PlaySong()
       }
-      this.RefreshPlayer()
+      this.UpdateProgress()
     },
     Shuffle() {
-      setShuffle(!this.isShuffle)
-      this.isShuffle = !this.isShuffle
+      if (this.GetIsShuffle) {
+        this.DisableShuffle()
+      }else {
+        this.EnableShuffle()
+      }
+      this.UpdateProgress()
     },
     Repeat() {
-      if (this.isRepeat) {
-        repeat('off')
+      if (this.GetIsRepeat === 'off') {
+        this.EnableRepeat()
       } else {
-        repeat('track')
+        this.DisableRepeat()
       }
-      this.isRepeat = !this.isRepeat
     },
     SetMute() {
       this.Volume = 0
+      this.ChangeVolume(0)
+      this.RefreshPlayer()
+      this.UpdateProgress()
+
     },
   }
 }

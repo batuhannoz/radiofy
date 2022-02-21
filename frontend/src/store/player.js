@@ -147,6 +147,7 @@ const store = createStore({
                 context.commit("ChangeArtistName", res.item.artists[0].name);
                 context.commit("ChangeSongName", res.item.name);
                 context.commit("ChangeImage", res.item.album.images[0].url);
+                context.commit("ChangeIsPlay", null);
                 context.commit("ChangeIsPlay", res.is_playing);
                 context.commit("ChangeDurationMS", res.item.duration_ms);
             })

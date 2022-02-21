@@ -26,14 +26,12 @@
       </div>
       <div class="w-full flex items-center mt-1.5 flex-grow-0 gap-x-2">
         <!--instant music duration-->
-        <div class="text-[0.688rem] text-white text-opacity-70">{{ Progress }}</div>
+        <div class="text-[0.688rem] text-white text-opacity-70">{{ GetProgressMS }}</div>
         <!--slider-->
         <div class="flex-grow">
           <vue-slider
-              v-model="Progress"
-              v-on:drag-start="DragStart"
-              v-on:drag-end="DragEnd"
-              @click="ClickChange"
+              v-model=" Progress "
+              :lazy="true"
               :max="GetDurationMS"
               :tooltip="'none'"
               :dot-size="15"
@@ -47,9 +45,9 @@
     <div class="flex-grow-0 flex items-center mr-2 text-center" style="height: 92px; width: 134px;">
       <div class="flex-grow flex flex-nowrap items-center">
         <button @click="SetMute" class="hover:scale-[1.06] hover:text-white w-8 h-8 flex-grow-0 flex justify-center items-center text-[#b3b3b3]">
-          <mute-icon v-if="GetVolume === 0"/>
-          <VolumeLow v-else-if="GetVolume < 33"/>
-          <VolumeMid v-else-if="GetVolume < 66"/>
+          <mute-icon v-if=" GetVolume === 0"/>
+          <VolumeLow v-else-if=" GetVolume < 33"/>
+          <VolumeMid v-else-if=" GetVolume < 66"/>
           <VolumeHigh v-else/>
         </button>
         <vue-slider style="width: 102px;"
@@ -81,7 +79,7 @@ import MuteIcon from './Icons/MuteIcon.vue'
 import VolumeLow from './Icons/VolumeLow.vue'
 import VolumeMid from './Icons/VolumeMid.vue'
 
-import {mapGetters, mapActions} from 'vuex'
+import {mapState, mapGetters, mapActions } from 'vuex'
 
 import {
   skipToPrevious,
@@ -102,6 +100,7 @@ export default {
     VolumeMid
   },
   computed: {
+    ...mapState(["ProgressMS"]),
     ...mapGetters([
         "GetImage",
         "GetIsShuffle",
@@ -115,15 +114,24 @@ export default {
     ])
   },
   created() {
-    this.RefreshPlayer()
-    this.UpdateProgress()
+    setTimeout(() => {
+      this.RefreshPlayer()
+    }, 1000)
   },
   data() {
     return {
       ProgressInterval: null,
+      Progress: 10000,
       IsDrag: false,
-      Progress: 0,
       Volume: 50,
+    }
+  },
+  watch: {
+    Progress(progressMS) {
+      this.ChangeProgressMsSpotify(progressMS)
+    },
+    Volume(vol) {
+      this.ChangeVolume(vol)
     }
   },
   ...mapGetters([
@@ -132,11 +140,6 @@ export default {
     "GetIsPlay",
     "GetIsRepeat",
   ]),
-  watch: {
-    Volume(vol) {
-      this.ChangeVolume(vol)
-    }
-  },
   methods: {
     ...mapActions([
         "ChangeImage",
@@ -151,37 +154,17 @@ export default {
         "DisableRepeat",
         "ChangeVolume"
     ]),
-
-    UpdateProgress() {
-      clearInterval(this.ProgressInterval)
-      if (this.GetIsPlay) {
-        this.ProgressInterval = setInterval(() => {
-          this.Progress = this.Progress + 1000
-          this.ChangeProgressMsStore(this.Progress)
-        }, 1000)
-      }
-
-    },
-    ClickChange(){
-      this.ChangeProgressMsSpotify(this.Progress)
-    },
-    DragStart(){
-      this.IsDrag = true
-    },
-    DragEnd(){
-      this.IsDrag = false
-      this.ChangeProgressMS(this.Progress)
-    },
     SkipToPrev() {
       skipToPrevious()
-      this.RefreshPlayer()
-      this.UpdateProgress()
+      setTimeout(() => {
+        this.RefreshPlayer()
+      }, 1000)
     },
     SkipToNext() {
       skipToNext()
-      this.RefreshPlayer()
-      this.UpdateProgress()
-
+      setTimeout(() => {
+        this.RefreshPlayer()
+      }, 1000)
     },
     PlayPause() {
       if (this.GetIsPlay) {
@@ -189,7 +172,9 @@ export default {
       } else {
         this.PlaySong()
       }
-      this.UpdateProgress()
+      setTimeout(() => {
+        this.RefreshPlayer()
+      }, 1000)
     },
     Shuffle() {
       if (this.GetIsShuffle) {
@@ -197,7 +182,9 @@ export default {
       }else {
         this.EnableShuffle()
       }
-      this.UpdateProgress()
+      setTimeout(() => {
+        this.RefreshPlayer()
+      }, 1000)
     },
     Repeat() {
       if (this.GetIsRepeat === 'off') {
@@ -205,14 +192,18 @@ export default {
       } else {
         this.DisableRepeat()
       }
+      setTimeout(() => {
+        this.RefreshPlayer()
+      }, 1000)
     },
     SetMute() {
       this.Volume = 0
       this.ChangeVolume(0)
-      this.RefreshPlayer()
-      this.UpdateProgress()
-
+      setTimeout(() => {
+        this.RefreshPlayer()
+      }, 1000)
     },
+
   }
 }
 </script>

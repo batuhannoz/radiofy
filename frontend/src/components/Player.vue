@@ -26,11 +26,12 @@
       </div>
       <div class="w-full flex items-center mt-1.5 flex-grow-0 gap-x-2">
         <!--instant music duration-->
-        <div class="text-[0.688rem] text-white text-opacity-70">{{ GetProgressMS }}</div>
+        <div class="text-[0.688rem] text-white text-opacity-70">{{ MstoSecond(GetProgressMS) }}</div>
         <!--slider-->
         <div class="flex-grow">
           <vue-slider
               v-model=" Progress "
+              @change="ChangeSpotifyProgress"
               :lazy="true"
               :max="GetDurationMS"
               :tooltip="'none'"
@@ -40,7 +41,7 @@
           ></vue-slider>
           </div>
         <!--total music duration-->
-        <div class="text-[0.688rem] text-white text-opacity-70">{{ GetDurationMS }}</div></div>
+        <div class="text-[0.688rem] text-white text-opacity-70">{{ MstoSecond(GetDurationMS) }}</div></div>
     </div>
     <div class="flex-grow-0 flex items-center mr-2 text-center" style="height: 92px; width: 134px;">
       <div class="flex-grow flex flex-nowrap items-center">
@@ -110,8 +111,16 @@ export default {
         "GetDurationMS",
         "GetVolume",
         "GetArtistName",
-        "GetSongName"
-    ])
+        "GetSongName",
+    ]),
+    Progress: {
+      get() {
+        return this.GetProgressMS
+      },
+      set(value) {
+        this.ChangeProgressMsStore(value)
+      }
+    }
   },
   created() {
     setTimeout(() => {
@@ -121,15 +130,11 @@ export default {
   data() {
     return {
       ProgressInterval: null,
-      Progress: 10000,
       IsDrag: false,
       Volume: 50,
     }
   },
   watch: {
-    Progress(progressMS) {
-      this.ChangeProgressMsSpotify(progressMS)
-    },
     Volume(vol) {
       this.ChangeVolume(vol)
     }
@@ -159,22 +164,37 @@ export default {
       setTimeout(() => {
         this.RefreshPlayer()
       }, 1000)
+      clearInterval(this.ProgressInterval)
+      this.Progress = 0
+      this.ProgressInterval = setInterval(() => {
+        this.Progress += 1000
+      }, 1000)
     },
     SkipToNext() {
       skipToNext()
       setTimeout(() => {
         this.RefreshPlayer()
       }, 1000)
+      clearInterval(this.ProgressInterval)
+      this.Progress = 0
+      this.ProgressInterval = setInterval(() => {
+        this.Progress += 1000
+      }, 1000)
     },
     PlayPause() {
       if (this.GetIsPlay) {
         this.PauseSong()
+        clearInterval(this.ProgressInterval)
       } else {
         this.PlaySong()
+        this.ProgressInterval = setInterval(() => {
+          this.Progress += 1000
+        }, 1000)
       }
       setTimeout(() => {
         this.RefreshPlayer()
       }, 1000)
+
     },
     Shuffle() {
       if (this.GetIsShuffle) {
@@ -203,7 +223,16 @@ export default {
         this.RefreshPlayer()
       }, 1000)
     },
-
+    MstoSecond(ms) {
+      return Math.floor(ms / 60000) + ":" + (((ms % 60000) / 1000).toFixed(0) < 10 ? '0' : '') + ((ms % 60000) / 1000).toFixed(0);
+    },
+    ChangeSpotifyProgress(value) {
+      this.ChangeProgressMsSpotify(value)
+      setTimeout(() => {
+        this.RefreshPlayer()
+      }, 1000)
+    }
   }
 }
+
 </script>

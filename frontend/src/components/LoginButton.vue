@@ -14,7 +14,7 @@ export default {
         response_type: "code",
         client_id: "d97ea09987ab46c2bb0b4fa4eaae55e1",
         scope:
-            "user-read-private user-read-email playlist-modify-private playlist-read-collaborative playlist-read-private playlist-modify-public user-read-recently-played user-top-read user-read-playback-position user-read-playback-state user-modify-playback-state user-modify-playback-state",
+            "user-read-private user-read-email streaming playlist-modify-private playlist-read-collaborative playlist-read-private playlist-modify-public user-read-recently-played user-top-read user-read-playback-position user-read-playback-state user-modify-playback-state user-modify-playback-state",
         redirect_uri: "http://localhost:8080/token",
         show_dialog: true,
       };

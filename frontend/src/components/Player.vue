@@ -1,7 +1,7 @@
 <template>
   <div class="bg-SpotifyPlayer text-white flex justify-between ">
     <div class="flex-grow-0 " style="height: 92px; width: 134px;">
-      <img style="height: 92px; width: 92px;" v-bind:src="GetImage">
+      <img v-if="GetImage" style="height: 92px; width: 92px;" v-bind:src="GetImage">
     </div>
     <div class="flex-grow-0 flex flex-col w-[45%] justify-center" style="max-width: 720px;">
       <div class="flex gap-x-2 mb-2 justify-center flex-grow-0">
@@ -113,30 +113,49 @@ export default {
         "GetArtistName",
         "GetSongName",
     ]),
+    change(){
+      return this.GetProgressMS
+    },
     Progress: {
       get() {
         return this.GetProgressMS
       },
       set(value) {
         this.ChangeProgressMsStore(value)
-      }
+      },
     }
   },
   created() {
     setTimeout(() => {
-      this.RefreshPlayer()
-    }, 1000)
+      this.RefreshPlayer().then(() => {
+        setTimeout(() => {
+          if (this.GetIsPlay) {
+            this.ProgressInterval = setInterval(() => {
+              this.Progress += 1000
+            }, 1000)
+          }
+        }, 1000)
+      })
+    }, 3000)
   },
   data() {
     return {
       ProgressInterval: null,
-      IsDrag: false,
       Volume: 50,
     }
   },
   watch: {
     Volume(vol) {
       this.ChangeVolume(vol)
+    },
+    change(value) {
+      if (value >= this.GetDurationMS) {
+        if (this.GetIsPlay === true) {
+          setTimeout(() => {
+            this.RefreshPlayer()
+          }, 3000)
+        }
+      }
     }
   },
   ...mapGetters([
@@ -163,7 +182,7 @@ export default {
       skipToPrevious()
       setTimeout(() => {
         this.RefreshPlayer()
-      }, 1000)
+      }, 3000)
       clearInterval(this.ProgressInterval)
       this.Progress = 0
       this.ProgressInterval = setInterval(() => {
@@ -174,7 +193,7 @@ export default {
       skipToNext()
       setTimeout(() => {
         this.RefreshPlayer()
-      }, 1000)
+      }, 3000)
       clearInterval(this.ProgressInterval)
       this.Progress = 0
       this.ProgressInterval = setInterval(() => {
@@ -193,8 +212,7 @@ export default {
       }
       setTimeout(() => {
         this.RefreshPlayer()
-      }, 1000)
-
+      }, 3000)
     },
     Shuffle() {
       if (this.GetIsShuffle) {
@@ -204,7 +222,7 @@ export default {
       }
       setTimeout(() => {
         this.RefreshPlayer()
-      }, 1000)
+      }, 3000)
     },
     Repeat() {
       if (this.GetIsRepeat === 'off') {
@@ -214,14 +232,14 @@ export default {
       }
       setTimeout(() => {
         this.RefreshPlayer()
-      }, 1000)
+      }, 3000)
     },
     SetMute() {
       this.Volume = 0
       this.ChangeVolume(0)
       setTimeout(() => {
         this.RefreshPlayer()
-      }, 1000)
+      }, 3000)
     },
     MstoSecond(ms) {
       return Math.floor(ms / 60000) + ":" + (((ms % 60000) / 1000).toFixed(0) < 10 ? '0' : '') + ((ms % 60000) / 1000).toFixed(0);
@@ -230,7 +248,7 @@ export default {
       this.ChangeProgressMsSpotify(value)
       setTimeout(() => {
         this.RefreshPlayer()
-      }, 1000)
+      }, 3000)
     }
   }
 }

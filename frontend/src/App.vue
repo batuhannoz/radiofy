@@ -17,6 +17,7 @@ import ActiveUsers from './components/ActiveUsers.vue'
 import Player from './components/Player.vue'
 import Chat from  './components/Chat.vue'
 import Header from './components/Header.vue'
+import VueCookies from "vue-cookies";
 
 export default {
   components: {
@@ -24,6 +25,57 @@ export default {
     Player,
     Chat,
     Header
+  },
+  created() {
+    window.onSpotifyWebPlaybackSDKReady = () => {};
+
+    async function waitForSpotifyWebPlaybackSDKToLoad() {
+      return new Promise((resolve) => {
+        if (window.Spotify) {
+          resolve(window.Spotify);
+        } else {
+          window.onSpotifyWebPlaybackSDKReady = () => {
+            resolve(window.Spotify);
+          };
+        }
+      })
+    }
+
+    (async () => {
+      const { Player } = await waitForSpotifyWebPlaybackSDKToLoad();
+      const token = VueCookies.get("access_token");
+
+      // eslint-disable-next-line
+      const player = new Player({
+        name: "Radiofy",
+        getOAuthToken: (cb) => {
+          cb(token);
+        },
+        volume: 0.5
+      });
+      // Ready
+      player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+      });
+
+      // Not Ready
+      player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+      });
+      player.addListener('initialization_error', ({ message }) => {
+        console.error(message);
+      });
+
+      player.addListener('authentication_error', ({ message }) => {
+        console.error(message);
+      });
+
+      player.addListener('account_error', ({ message }) => {
+        console.error(message);
+      });
+      player.connect();
+
+    })()
   }
 }
 </script>

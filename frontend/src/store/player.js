@@ -88,7 +88,6 @@ const store = createStore({
         ChangeVolume(context, Volume) {
             setVolume(Volume);
             context.commit('ChangeVolume', Volume);
-            console.log(Volume)
         },
         ChangeShuffle(context, IsShuffle) {
             setShuffle(IsShuffle);

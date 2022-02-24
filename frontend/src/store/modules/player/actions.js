@@ -5,7 +5,9 @@ import {
     play,
     pause,
     repeat,
-    seekThePosition} from '@/api/spotify/player.js';
+    seekThePosition,
+    skipToNext,
+    skipToPrevious} from '@/api/spotify/player.js';
 
 export default {
     setDeviceID(context, deviceID) {
@@ -24,23 +26,23 @@ export default {
             context.commit('setShuffle', shuffleState);
         })
     },
-    enableShuffle({context, state}) {
-        shuffle(true, state.deviceID).then(() => {
+    enableShuffle(context) {
+        shuffle(true).then(() => {
             context.commit('setShuffle', true);
         })
     },
-    disableShuffle({context, state}) {
-        shuffle('off', state.deviceID).then(() => {
-            context.commit('setShuffle', 'off');
+    disableShuffle(context) {
+        shuffle(false).then(() => {
+            context.commit('setShuffle', false);
         })
     },
-    playSong({context, state}) {
-        play(state.deviceID).then(() => {
+    playSong(context) {
+        play().then(() => {
             context.commit('setPlayState', true);
         })
     },
-    pauseSong({context, state}) {
-        pause(state.deviceID).then(() => {
+    pauseSong(context) {
+        pause().then(() => {
             context.commit('setPlayState', false);
         })
     },
@@ -75,6 +77,20 @@ export default {
       seekThePosition(position).then(() => {
           context.commit("setProgressMS", position);
       });
+    },
+    skipToNext({dispatch}) {
+        skipToNext().then(() => {
+            setTimeout(() => {
+                dispatch("refreshPlayer")
+            }, 750)
+        })
+    },
+    skipToPrevious({dispatch}) {
+        skipToPrevious().then(() => {
+            setTimeout(() => {
+                dispatch("refreshPlayer")
+            }, 750)
+        })
     },
     refreshPlayer(context) {
         getCurrentState().then((res) => {

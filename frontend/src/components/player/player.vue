@@ -1,18 +1,20 @@
 <template>
   <div class="bg-SpotifyPlayer text-white flex justify-between ">
     <!--current music image-->
-    <div class="flex-grow-0 " style="height: 92px; width: 140px;">
+    <div class="flex-grow-0 flex flex-nowrap" style="height: 92px; width: 140px;">
       <img v-if="getImage" style="height: 92px; width: 92px;" :src="getImage"/>
     </div>
     <!--player buttons-->
     <div class="flex-grow-0 flex flex-col w-[45%] justify-center" style="max-width: 720px;">
       <div class="flex gap-x-2 mb-2 justify-center flex-grow-0">
-        <shuffle/>
-        <previous/>
-        <play v-if="getIsPlay"/>
-        <Stop v-else/>
-        <next/>
-        <repeat/>
+        <shuffle @click="disableShuffle" v-if="getIsShuffle" class="bg-SpotifyGreen"/>
+        <shuffle @click="enableShuffle" v-else/>
+        <previous @click="skipToPrevious"/>
+        <Stop @click="pauseSong" v-if="getIsPlay"/>
+        <play @click="playSong" v-else/>
+        <next @click="skipToNext"/>
+        <repeat @click="disableRepeat" v-if="getIsRepeat === 'track'" class="bg-SpotifyGreen"/>
+        <repeat @click="enableRepeat" v-else/>
       </div>
       <div class="w-full flex items-center mt-1.5 flex-grow-0 gap-x-2">
         <!--instant music duration-->
@@ -23,11 +25,12 @@
               v-model="Progress"
               :lazy="true"
               :max="getDurationMS"
+              @error="error"
               :tooltip="'none'"
               :dot-size="15"
               :process-style="{ background: '#1db954' }"
               :bg-style="{ background: '#737575' }"
-          ></vue-slider>
+          />
         </div>
         <!--total music duration-->
         <div class="text-[0.688rem] text-white text-opacity-70">{{MStoSecond(getDurationMS)}}</div>
@@ -46,7 +49,7 @@
                     :dot-size="15"
                     :process-style="{background: '#1db954'}"
                     :bg-style="{background: '#737575'}"
-        ></vue-slider>
+        />
       </div>
     </div>
   </div>
@@ -82,9 +85,20 @@ export default {
     VueSlider
   },
   data() {
-    return{
-      Progress: 0,
-      Volume: 0
+    return {
+      ProgressInterval: null,
+    }
+  },
+  watch:{
+    isPlay(isPlay) {
+      if(isPlay) {
+        clearInterval(this.ProgressInterval)
+        this.ProgressInterval = setInterval(() => {
+          this.setProgress(this.Progress + 1000)
+        }, 1000)
+      }else{
+        clearInterval(this.ProgressInterval)
+      }
     }
   },
   computed: {
@@ -97,8 +111,29 @@ export default {
       "getProgressMS",
       "getIsShuffle",
       "getIsPlay",
-      "getVolume"
+      "getVolume",
     ]),
+    isPlay: {
+      get() {
+        return this.getIsPlay
+      }
+    },
+    Progress: {
+      get() {
+        return this.getProgressMS
+      },
+      set(value) {
+        this.seekThePosition(value)
+      },
+    },
+    Volume: {
+      get() {
+        return this.getVolume
+      },
+      set(volume) {
+        this.setVolume(volume)
+      }
+    }
   },
   methods: {
     ...mapActions("player",[
@@ -109,12 +144,32 @@ export default {
       "enableRepeat",
       "disableShuffle",
       "disableRepeat",
-      "enableShuffle"]),
+      "enableShuffle",
+      "seekThePosition",
+      "skipToNext",
+      "skipToPrevious",
+      "setProgress",
+      "refreshPlayer"]),
     MStoSecond(ms) {
       return Math.floor(ms / 60000) + ":" + (((ms % 60000) / 1000).toFixed(0) < 10 ? '0' : '') + ((ms % 60000) / 1000).toFixed(0);
     },
-    play() {
-      this.playSong()
+    error(errorType) {
+      /*
+
+      * const ERROR_TYPE = {
+      *   VALUE: 1,
+      *   INTERVAL: 2,
+      *   MIN: 3,
+      *   MAX: 4,
+      *   ORDER: 5,
+      * }
+      *
+      * */
+      if(errorType === 4) {
+        setTimeout(() => {
+          this.refreshPlayer()
+        },1500)
+      }
     }
   }
 }

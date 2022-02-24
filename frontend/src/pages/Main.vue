@@ -1,7 +1,5 @@
 <template>
   <div class="text-white">
-    {{ getAccessToken }}
-    {{ getDeviceID}}
   </div>
 </template>
 

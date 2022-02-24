@@ -13,8 +13,8 @@ export const repeat = (state) => {
     return spotifyApi.setRepeat(state);
 };
 
-export const shuffle = (state, deviceID) => {
-    return spotifyApi.setShuffle(state, {device_id: deviceID});
+export const shuffle = (state) => {
+    return spotifyApi.setShuffle(state);
 };
 
 export const skipToNext = () => {
@@ -25,8 +25,8 @@ export const skipToPrevious = () => {
     return spotifyApi.skipToPrevious();
 };
 
-export const play = (deviceID) => {
-    return spotifyApi.play({device_id: deviceID});
+export const play = () => {
+    return spotifyApi.play();
 };
 
 export const pause = () => {

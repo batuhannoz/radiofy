@@ -3,13 +3,3 @@
     Chat
   </div>
 </template>
-
-<script>
-
-
-</script>
-
-<style>
-
-
-</style>

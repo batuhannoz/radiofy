@@ -1,11 +1,10 @@
 import { createApp } from 'vue';
 
-import router from './router/router.js';
 import App from './App.vue';
-import store from "@/store/player.js";
+import './assets/tailwind.css';
 
-import './assets/tailwind.css'
-
+import router from './router/router.js';
+import store from './store/index.js';
 
 const app = createApp(App);
 

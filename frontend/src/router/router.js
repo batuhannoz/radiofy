@@ -1,15 +1,26 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import store from "@/store";
+import Main from '../pages/Main.vue';
+import Login from '../pages/Login';
+import Callback from '../pages/Callback';
+//import VueCookies from "vue-cookies";
 
-import Token from '../pages/Token.vue'
-import MainPage from '../pages/Clubs'
-import Login from "@/pages/Login";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        {path: '/', component: MainPage},
+        {path: '/', component: Main},
         {path: "/login", component: Login},
-        {path: '/token', component: Token},
+        {path: '/callback', component: Callback},
     ]
 });
+
+router.beforeEach(function(to, from, next,) {
+    if(to.path === "/login" || to.path === "/callback") {
+        next();
+    } else if(!store.getters["auth/getAccessToken"]) {
+        router.push("/login");
+    }
+    next();
+})
 
 export default router;

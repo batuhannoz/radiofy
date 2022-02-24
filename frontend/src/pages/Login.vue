@@ -1,18 +1,13 @@
 <template>
-  <div class="text-white flex justify-center items-center">
-    <login-button ></login-button>
-  </div>
+    <login-button class="flex justify-center items-center"/>
 </template>
 
 <script>
-import loginButton from "@/components/LoginButton";
+import LoginButton from '../components/Login/LoginButton.vue';
+
 export default {
- components: {
-   loginButton,
- }
-}
+  components: {
+    LoginButton
+  }
+};
 </script>
-
-<style>
-
-</style>

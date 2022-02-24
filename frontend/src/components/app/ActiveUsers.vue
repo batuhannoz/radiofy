@@ -3,14 +3,3 @@
     Active users
   </div>
 </template>
-
-
-<script>
-
-
-</script>
-
-<style>
-
-
-</style>

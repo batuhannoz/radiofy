@@ -1,7 +1,7 @@
 <template>
   <div class="text-white grid grid-cols-4 overflow-y-auto scroller ">
     <!--Create New Club-->
-    <button class="hover:opacity-70 hover:scale-[1.02] flex flex-col m-auto my-2 h-64 w-48 bg-SpotifyPlayer rounded-lg p-3.5">
+    <button @click="RedirectCreatePage" class="hover:opacity-70 hover:scale-[1.02] flex flex-col m-auto my-2 h-64 w-48 bg-SpotifyPlayer rounded-lg p-3.5">
       <img src="../assets/image/plus_icon.png" class="rounded-md"/>
       <div class="h-full w-full flex justify-center mt-1 flex-col items-center">
         <div class="font-mono line-clamp-1 truncate text-center w-full">
@@ -89,6 +89,11 @@ export default {
   computed: {
     ...mapGetters("auth", ["getAccessToken"]),
     ...mapGetters("player", ["getDeviceID"])
+  },
+  methods: {
+    RedirectCreatePage() {
+      this.$router.push("/create")
+    }
   }
 }
 </script>

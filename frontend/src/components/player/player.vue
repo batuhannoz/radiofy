@@ -155,7 +155,6 @@ export default {
     },
     error(errorType) {
       /*
-
       * const ERROR_TYPE = {
       *   VALUE: 1,
       *   INTERVAL: 2,
@@ -163,7 +162,6 @@ export default {
       *   MAX: 4,
       *   ORDER: 5,
       * }
-      *
       * */
       if(errorType === 4) {
         setTimeout(() => {

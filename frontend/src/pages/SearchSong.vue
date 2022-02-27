@@ -15,13 +15,13 @@
     </div>
     <!--item list-->
     <ul class="text-white grid overflow-y-auto scroller grid-cols-4">
-      <button v-for="items in searchedSongs" :key="items" class="hover:opacity-70 hover:scale-[1.02] flex flex-col m-auto my-2 h-64 w-48 bg-SpotifyPlayer rounded-lg p-3.5">
+      <button @click="playSong(items.album.uri, items.track_number)" v-for="items in searchedSongs" :key="items" class="hover:opacity-70 hover:scale-[1.02] flex flex-col m-auto my-2 h-64 w-48 bg-SpotifyPlayer rounded-lg p-3.5">
         <img :src="items.album.images[0].url" class="rounded-md"/>
         <div class="h-full w-full flex justify-center mt-1 flex-col items-center">
           <div class="font-bold line-clamp-1 text-center w-full">
             {{items.name}}
           </div>
-          <p class="text-center line-clamp-2 w-full h-9 text-xs text-[#b3b3b3]">
+          <p class="text-center w-full h-9 text-xs text-[#b3b3b3]">
             {{items.album.artists[0].name}}
           </p>
         </div>
@@ -31,13 +31,17 @@
 </template>
 
 <script>
-import {searchItem} from '@/api/spotify/player.js';
+import {mapGetters} from "vuex";
+import {searchItem, playSong} from '@/api/spotify/player.js';
 export default {
   data() {
     return {
       searchName: "",
       searchedSongs: null
     }
+  },
+  computed: {
+    ...mapGetters("player",["getDeviceID"]),
   },
   methods: {
     searchTrack() {
@@ -46,8 +50,8 @@ export default {
       })
 
     },
-    playSong() {
-
+    playSong(albumID, position) {
+      playSong(albumID, position - 1, this.getDeviceID)
     }
   }
 }

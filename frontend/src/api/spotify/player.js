@@ -52,3 +52,7 @@ export const seekThePosition = (position) => {
 export const searchItem = (query, limit) => {
     return spotifyApi.searchTracks(query, {limit: limit})
 }
+
+export const playSong = (albumID, position, deviceID, positionMS) => {
+    return spotifyApi.play({context_uri: albumID, position_ms: positionMS, offset: {position: position}, device_id: deviceID});
+};

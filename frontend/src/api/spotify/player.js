@@ -48,3 +48,7 @@ export const getCurrentState = () => {
 export const seekThePosition = (position) => {
     return spotifyApi.seek(position);
 };
+
+export const searchItem = (query, limit) => {
+    return spotifyApi.searchTracks(query, {limit: limit})
+}

@@ -4,6 +4,7 @@ import Main from '../pages/Main.vue';
 import Login from '../pages/Login';
 import Callback from '../pages/Callback';
 import CreateClub from '../pages/CreateClub';
+import SearchSong from '../pages/SearchSong'
 //import VueCookies from "vue-cookies";
 
 const router = createRouter({
@@ -13,6 +14,7 @@ const router = createRouter({
         {path: '/login', component: Login},
         {path: '/callback', component: Callback},
         {path: '/create', component: CreateClub},
+        {path: '/search', component: SearchSong}
     ]
 });
 

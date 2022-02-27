@@ -2,16 +2,78 @@ package main
 
 import (
 	"fmt"
-	spotify "github.com/batuhannoz/spotigo/user"
 	"github.com/gin-gonic/gin"
-	mysql "gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"io/ioutil"
-	"log"
+	"github.com/gorilla/websocket"
 	"net/http"
-	"os"
 )
 
+type Message struct {
+	ClubName        string `json:"ClubName"`
+	ClubDescription string `json:"ClubDescription"`
+}
+
+var (
+	wsUpgrader = websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+	}
+
+	wsConn *websocket.Conn
+)
+
+func WsEndpoint(w http.ResponseWriter, r *http.Request) {
+
+	wsUpgrader.CheckOrigin = func(r *http.Request) bool {
+		// check the http.Request
+		// make sure it's OK to access
+		return true
+	}
+	var err error
+	wsConn, err = wsUpgrader.Upgrade(w, r, nil)
+	if err != nil {
+		fmt.Printf("could not upgrade: %s\n", err.Error())
+		return
+	}
+
+	defer wsConn.Close()
+
+	// event loop
+	for {
+		var msg Message
+
+		err := wsConn.ReadJSON(&msg)
+		if err != nil {
+			fmt.Printf("error reading JSON: %s\n", err.Error())
+			break
+		}
+		fmt.Printf("Club Name: %s\n", msg.ClubName)
+		fmt.Printf("Club Description: %s\n", msg.ClubDescription)
+		var ReceivedMSG Message
+		ReceivedMSG.ClubName = msg.ClubName
+		ReceivedMSG.ClubDescription = msg.ClubDescription
+		err = wsConn.WriteJSON(ReceivedMSG)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+}
+
+func SendMessage(msg string) {
+	err := wsConn.WriteMessage(websocket.TextMessage, []byte(msg))
+	if err != nil {
+		fmt.Printf("error sending message: %s\n", err.Error())
+	}
+}
+
+func main() {
+	r := gin.Default()
+	r.GET("/ws", func(c *gin.Context) {
+		WsEndpoint(c.Writer, c.Request)
+	})
+	r.Run(":3000")
+}
+
+/*
 func (UserInfo) TableName() string {
 	return "user_info"
 }
@@ -22,14 +84,6 @@ type UserInfo struct {
 	Mail           string `gorm:"type:varchar(50)" json:"mail"`
 	Country        string `gorm:"type:varchar(50)" json:"country"`
 	ProfilePicture string `gorm:"type:varchar(100)" json:"profile_picture"`
-}
-
-const (
-	SetVolumeUrl   = "https://api.spotify.com/v1/me/player/volume"
-	StartResumeUrl = "https://api.spotify.com/v1/me/player/play"
-	PauseUrl       = "https://api.spotify.com/v1/me/player/pause"
-	AuthName       = "Authorization"
-)
 
 func main() {
 	dbUser := ""
@@ -51,63 +105,7 @@ func main() {
 	r.Run(":3000")
 }
 
-func Pause(*gin.Context) {
-	url := PauseUrl
-	client := http.Client{}
-	req, _ := http.NewRequest(http.MethodPut, url, nil)
-	//req.Header.Set(AuthName, Token)
-	resp, _ := client.Do(req)
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	bodyString := string(bodyBytes)
-	fmt.Println(bodyString)
-}
-
-func StartResume(*gin.Context) {
-	url := StartResumeUrl
-	client := http.Client{}
-
-	req, err := http.NewRequest(http.MethodPut, url, nil)
-	if err != nil {
-		log.Print(err)
-		os.Exit(1)
-	}
-	//req.Header.Set("Authorization", Token)
-	response, _ := client.Do(req)
-	bodyBytes, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	bodyString := string(bodyBytes)
-	fmt.Println(bodyString)
-}
-
-func Volume(gin *gin.Context) {
-	a := gin.Request.URL.Query()
-	b := a["volume"][0]
-	url := SetVolumeUrl
-	client := http.Client{}
-	req, err := http.NewRequest(http.MethodPut, url, nil)
-	if err != nil {
-		log.Print(err)
-		os.Exit(1)
-	}
-	//req.Header.Set(AuthName, Token)
-	q := req.URL.Query()
-	q.Add("volume_percent", b)
-	req.URL.RawQuery = q.Encode()
-	response, _ := client.Do(req)
-	bodyBytes, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	bodyString := string(bodyBytes)
-	fmt.Println(bodyString)
-}
-
-func AddUser(gin *gin.Context) {
+ func AddUser(gin *gin.Context) {
 	a := gin.Request.URL.Query()
 	token := a["token"][0]
 	realtoken := "Bearer " + token
@@ -125,3 +123,4 @@ func AddUser(gin *gin.Context) {
 	db.Save(&user_info)
 
 }
+*/

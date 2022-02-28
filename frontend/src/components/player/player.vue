@@ -11,7 +11,7 @@
         <shuffle @click="enableShuffle" v-else/>
         <previous @click="skipToPrevious"/>
         <Stop @click="pauseSong" v-if="getIsPlay"/>
-        <play @click="playSong" v-else/>
+        <play @click="play" v-else/>
         <next @click="skipToNext"/>
         <repeat @click="disableRepeat" v-if="getIsRepeat === 'track'" class="bg-SpotifyGreen"/>
         <repeat @click="enableRepeat" v-else/>
@@ -137,7 +137,7 @@ export default {
   },
   methods: {
     ...mapActions("player",[
-      "playSong",
+      "play",
       "pauseSong",
       "setVolume",
       "setShuffle",

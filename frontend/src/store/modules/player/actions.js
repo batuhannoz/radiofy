@@ -7,6 +7,7 @@ import {
     repeat,
     seekThePosition,
     skipToNext,
+    playSong,
     skipToPrevious} from '@/api/spotify/player.js';
 
 export default {
@@ -36,7 +37,7 @@ export default {
             context.commit('setShuffle', false);
         })
     },
-    playSong(context) {
+    play(context) {
         play().then(() => {
             context.commit('setPlayState', true);
         })
@@ -87,6 +88,16 @@ export default {
     },
     skipToPrevious({dispatch}) {
         skipToPrevious().then(() => {
+            setTimeout(() => {
+                dispatch("refreshPlayer")
+            }, 750)
+        })
+    },
+    playSong({dispatch}, songInfo) {
+        console.log(songInfo.albumID)
+        console.log(songInfo.position)
+        console.log(songInfo.deviceID)
+        playSong(songInfo.albumID, songInfo.position, songInfo.deviceID).then(() => {
             setTimeout(() => {
                 dispatch("refreshPlayer")
             }, 750)

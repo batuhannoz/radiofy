@@ -1,13 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
-	"net/http"
 )
 
-type Message struct {
+/*type Message struct {
 	ClubName        string `json:"ClubName"`
 	ClubDescription string `json:"ClubDescription"`
 }
@@ -63,14 +62,72 @@ func SendMessage(msg string) {
 	if err != nil {
 		fmt.Printf("error sending message: %s\n", err.Error())
 	}
+}*/
+
+func createClub(ctx *gin.Context) {
+
+}
+
+type Club struct {
+	Image       string `json:"image"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+func activeClubsList(ctx *gin.Context) {
+	club1 := &Club{
+		Image:       "https://i.scdn.co/image/993cdbae6bf9c21aa653ada2d153c8f05f1b842e",
+		Name:        "Science Club",
+		Description: "listening to science podcasts",
+	}
+	club2 := &Club{
+		Image:       "https://i.scdn.co/image/ab67616d00001e026ca5c90113b30c3c43ffb8f4",
+		Name:        "Eminem Club",
+		Description: "listening to Eminem songs",
+	}
+	club3 := &Club{
+		Image:       "https://i.scdn.co/image/ab67706c0000bebb443715c10bcde6c10f733874",
+		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+	}
+	club4 := &Club{
+		Image:       "https://i.scdn.co/image/ab67616d00001e02d9b35d1c4d15c9de88b754a7",
+		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+	}
+	club5 := &Club{
+		Image:       "https://i.scdn.co/image/ab67616d00001e0259ac0a9acb7bf0d315301152",
+		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+	}
+	data, err := json.Marshal([]*Club{club1, club2, club3, club4, club5})
+	if err != nil {
+		fmt.Println(err)
+	}
+	ctx.String(200, string(data))
 }
 
 func main() {
 	r := gin.Default()
-	r.GET("/ws", func(c *gin.Context) {
-		WsEndpoint(c.Writer, c.Request)
-	})
+	r.GET("/club/list", CORSMiddleware(), activeClubsList)
+	r.GET("/create/club", CORSMiddleware(), createClub)
 	r.Run(":3000")
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }
 
 /*

@@ -94,9 +94,6 @@ export default {
         })
     },
     playSong({dispatch}, songInfo) {
-        console.log(songInfo.albumID)
-        console.log(songInfo.position)
-        console.log(songInfo.deviceID)
         playSong(songInfo.albumID, songInfo.position, songInfo.deviceID).then(() => {
             setTimeout(() => {
                 dispatch("refreshPlayer")

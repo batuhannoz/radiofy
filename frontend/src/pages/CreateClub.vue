@@ -32,7 +32,7 @@ export default {
       clubDescription: "",
       socket: null
     };
-  },
+  },/*
   mounted() {
     this.socket = new WebSocket("ws://localhost:3000/ws")
     this.socket.onmessage = (msg) => {
@@ -53,6 +53,11 @@ export default {
       }
       this.socket.send(JSON.stringify(msg))
       this.$router.push("/search")
+    }
+  }*/
+  methods: {
+    createClub() {
+
     }
   }
 }

@@ -1,135 +1,150 @@
 package main
 
 import (
+	"crypto/rand"
 	"encoding/json"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
+	"io"
+	"net/http"
 )
 
-/*type Message struct {
-	ClubName        string `json:"ClubName"`
-	ClubDescription string `json:"ClubDescription"`
-}
+var ClubWithCodes = make(map[string]Club)
 
-var (
-	wsUpgrader = websocket.Upgrader{
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
-	}
-
-	wsConn *websocket.Conn
-)
-
-func WsEndpoint(w http.ResponseWriter, r *http.Request) {
-
-	wsUpgrader.CheckOrigin = func(r *http.Request) bool {
-		// check the http.Request
-		// make sure it's OK to access
-		return true
-	}
-	var err error
-	wsConn, err = wsUpgrader.Upgrade(w, r, nil)
-	if err != nil {
-		fmt.Printf("could not upgrade: %s\n", err.Error())
-		return
-	}
-
-	defer wsConn.Close()
-
-	// event loop
-	for {
-		var msg Message
-
-		err := wsConn.ReadJSON(&msg)
-		if err != nil {
-			fmt.Printf("error reading JSON: %s\n", err.Error())
-			break
-		}
-		fmt.Printf("Club Name: %s\n", msg.ClubName)
-		fmt.Printf("Club Description: %s\n", msg.ClubDescription)
-		var ReceivedMSG Message
-		ReceivedMSG.ClubName = msg.ClubName
-		ReceivedMSG.ClubDescription = msg.ClubDescription
-		err = wsConn.WriteJSON(ReceivedMSG)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-}
-
-func SendMessage(msg string) {
-	err := wsConn.WriteMessage(websocket.TextMessage, []byte(msg))
-	if err != nil {
-		fmt.Printf("error sending message: %s\n", err.Error())
-	}
-}*/
-
-func createClub(ctx *gin.Context) {
-
+type Playback struct {
+	SongID     string `json:"songID"`
+	SongName   string `json:"songName"`
+	ArtistName string `json:"artistName"`
+	Image      string `json:"image"`
+	ProgressMS int    `json:"progressMS"`
 }
 
 type Club struct {
+	Code        string `json:"code"`
 	Image       string `json:"image"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
 
-func activeClubsList(ctx *gin.Context) {
-	club1 := &Club{
+var WsUpgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
+
+func Listener(ctx *gin.Context) {
+	// TODO Connect to users with websocket and send the song the leader is listening to
+}
+
+func ClubLeader(ctx *gin.Context) {
+	var playback Playback
+
+	err := json.NewDecoder(ctx.Request.Body).Decode(&playback)
+	if err != nil {
+		fmt.Println(err)
+	}
+	// TODO send incoming playback to other listeners
+}
+
+func CreateClub(ctx *gin.Context) {
+	var c Club
+
+	err := json.NewDecoder(ctx.Request.Body).Decode(&c)
+	if err != nil {
+		fmt.Println(err)
+	}
+	code := EncodeToString(6)
+	c.Code, ClubWithCodes[code] = code, c
+	data, err := json.Marshal(c)
+	if err != nil {
+		fmt.Println(err)
+	}
+	ctx.String(http.StatusOK, string(data))
+}
+
+func ActiveClubsList(ctx *gin.Context) {
+	data, err := json.Marshal(ClubWithCodes)
+	if err != nil {
+		fmt.Println(err)
+	}
+	ctx.String(http.StatusOK, string(data))
+}
+
+func main() {
+	club1 := Club{
+		Code:        "111111",
 		Image:       "https://i.scdn.co/image/993cdbae6bf9c21aa653ada2d153c8f05f1b842e",
-		Name:        "Science Club",
-		Description: "listening to science podcasts",
+		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 	}
-	club2 := &Club{
+	club2 := Club{
+		Code:        "222222",
 		Image:       "https://i.scdn.co/image/ab67616d00001e026ca5c90113b30c3c43ffb8f4",
-		Name:        "Eminem Club",
-		Description: "listening to Eminem songs",
+		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 	}
-	club3 := &Club{
+	club3 := Club{
+		Code:        "333333",
 		Image:       "https://i.scdn.co/image/ab67706c0000bebb443715c10bcde6c10f733874",
 		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 	}
-	club4 := &Club{
+	club4 := Club{
+		Code:        "444444",
 		Image:       "https://i.scdn.co/image/ab67616d00001e02d9b35d1c4d15c9de88b754a7",
 		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 	}
-	club5 := &Club{
+	club5 := Club{
+		Code:        "555555",
 		Image:       "https://i.scdn.co/image/ab67616d00001e0259ac0a9acb7bf0d315301152",
 		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 	}
-	data, err := json.Marshal([]*Club{club1, club2, club3, club4, club5})
-	if err != nil {
-		fmt.Println(err)
-	}
-	ctx.String(200, string(data))
-}
+	ClubWithCodes["111111"] = club1
+	ClubWithCodes["222222"] = club2
+	ClubWithCodes["333333"] = club3
+	ClubWithCodes["444444"] = club4
+	ClubWithCodes["555555"] = club5
 
-func main() {
 	r := gin.Default()
-	r.GET("/club/list", CORSMiddleware(), activeClubsList)
-	r.GET("/create/club", CORSMiddleware(), createClub)
-	r.Run(":3000")
-}
+	r.Use(cors.Default())
+	//
+	// Path that gives instantly active clubs
+	r.GET("/club/list", ActiveClubsList)
+	//
+	// The path the club leader uses to change songs
+	r.GET("/club/leader/:id", ClubLeader)
+	//
+	// Websocket path to which listeners connect
+	r.GET("/club/:id", Listener)
+	//
+	// The path the club leader uses to create a club and get their own party/club code
+	r.POST("/create/club", CreateClub)
 
-func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-
-		c.Next()
+	err := r.Run(":3000")
+	if err != nil {
+		panic(err)
 	}
 }
 
+// EncodeToString Generate random string
+var table = [...]byte{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
+
+func EncodeToString(max int) string {
+	b := make([]byte, max)
+	n, err := io.ReadAtLeast(rand.Reader, b, max)
+	if n != max {
+		panic(err)
+	}
+	for i := 0; i < len(b); i++ {
+		b[i] = table[int(b[i])%len(table)]
+	}
+	return string(b)
+}
+
+// Mysql DB Connection With GORM
 /*
 func (UserInfo) TableName() string {
 	return "user_info"
@@ -178,6 +193,5 @@ func main() {
 		ProfilePicture: c.Images[0].Url,
 	}
 	db.Save(&user_info)
-
 }
 */

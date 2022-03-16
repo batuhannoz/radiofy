@@ -29,4 +29,7 @@ export default {
     getIsRepeat (state) {
         return state.isRepeat;
     },
+    getSongID (state) {
+        return state.songID
+    }
 }

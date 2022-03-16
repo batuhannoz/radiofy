@@ -28,5 +28,8 @@ export default {
     },
     setRepeat(state, repeatState) {
         state.isRepeat = repeatState;
+    },
+    setSongID(state, songID) {
+        state.songID = songID
     }
 };

@@ -111,6 +111,7 @@ export default {
             context.commit("setImage", res.item.album.images[0].url);
             context.commit("setPlayState", res.is_playing);
             context.commit("setDurationMS", res.item.duration_ms);
+            context.commit("setSongID", res.item.id)
         })
     }
 }

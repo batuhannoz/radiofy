@@ -16,6 +16,7 @@ export default {
             durationMS: null,
             progressMS: null,
             isRepeat: null,
+            songID: null
         };
     },
     getters: playerGetters,

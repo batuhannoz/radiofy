@@ -11,9 +11,14 @@ import (
 	"net/http"
 )
 
+var wsConn *websocket.Conn
+
 var ClubWithCodes = make(map[string]Club)
 
 type Playback struct {
+	AlbumID    string `json:"albumID"`
+	Position   int    `json:"position"`
+	ClubID     string `json:"clubID"`
 	SongID     string `json:"songID"`
 	SongName   string `json:"songName"`
 	ArtistName string `json:"artistName"`
@@ -28,13 +33,33 @@ type Club struct {
 	Description string `json:"description"`
 }
 
-var WsUpgrader = websocket.Upgrader{
+var wsUpgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 }
 
+func UpgradeListenersPlayback(playback Playback) {
+	byte, err := json.Marshal(playback)
+	err = wsConn.WriteMessage(websocket.TextMessage, byte)
+	if err != nil {
+		fmt.Printf("error sending playback: %s\n", err.Error())
+	}
+	fmt.Println("hello")
+}
+
 func Listener(ctx *gin.Context) {
 	// TODO Connect to users with websocket and send the song the leader is listening to
+	wsUpgrader.CheckOrigin = func(r *http.Request) bool {
+		// make sure it's OK to access
+		return true
+	}
+	var err error
+
+	wsConn, err = wsUpgrader.Upgrade(ctx.Writer, ctx.Request, nil)
+	if err != nil {
+		fmt.Printf("could not upgrade: %s\n", err.Error())
+		return
+	}
 }
 
 func ClubLeader(ctx *gin.Context) {
@@ -45,6 +70,7 @@ func ClubLeader(ctx *gin.Context) {
 		fmt.Println(err)
 	}
 	// TODO send incoming playback to other listeners
+	UpgradeListenersPlayback(playback)
 }
 
 func CreateClub(ctx *gin.Context) {
@@ -55,7 +81,8 @@ func CreateClub(ctx *gin.Context) {
 		fmt.Println(err)
 	}
 	code := EncodeToString(6)
-	c.Code, ClubWithCodes[code] = code, c
+	c.Code = code
+	ClubWithCodes[code] = c
 	data, err := json.Marshal(c)
 	if err != nil {
 		fmt.Println(err)
@@ -115,7 +142,7 @@ func main() {
 	r.GET("/club/list", ActiveClubsList)
 	//
 	// The path the club leader uses to change songs
-	r.GET("/club/leader/:id", ClubLeader)
+	r.POST("/club/leader/:id", ClubLeader)
 	//
 	// Websocket path to which listeners connect
 	r.GET("/club/:id", Listener)

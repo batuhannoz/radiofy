@@ -31,5 +31,11 @@ export default {
     },
     getSongID (state) {
         return state.songID
+    },
+    getPosition (state) {
+        return state.position
+    },
+    getAlbumID (state) {
+        return state.albumID
     }
 }

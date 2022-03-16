@@ -31,5 +31,11 @@ export default {
     },
     setSongID(state, songID) {
         state.songID = songID
+    },
+    setPosition(state, position) {
+        state.position = position
+    },
+    setAlbumID(state, albumID) {
+        state.albumID = albumID
     }
 };

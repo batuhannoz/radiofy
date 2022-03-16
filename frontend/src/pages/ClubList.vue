@@ -13,7 +13,7 @@
       </div>
     </button>
     <!--Active Clubs-->
-    <button v-for="items in clubList" :key="items" class="hover:opacity-70 hover:scale-[1.02] flex flex-col m-auto my-2 h-64 w-48 bg-SpotifyPlayer rounded-lg p-3.5">
+    <button @click="RedirectClub(items.code)" v-for="items in clubList" :key="items" class="hover:opacity-70 hover:scale-[1.02] flex flex-col m-auto my-2 h-64 w-48 bg-SpotifyPlayer rounded-lg p-3.5">
       <img :src="items.image" class="rounded-md"/>
       <div class="h-full w-full flex justify-center mt-1 flex-col items-center">
         <div class="font-bold line-clamp-1 text-center w-full">
@@ -43,12 +43,17 @@ export default {
   },
   mounted() {
     axios.get('http://localhost:3000/club/list').then((res) => {
+      console.log(res)
       this.clubList = res.data
     })
   },
   methods: {
     RedirectCreatePage() {
       this.$router.push("/create")
+    },
+    RedirectClub(clubCode) {
+      console.log(clubCode)
+      this.$router.push("/club/"+ clubCode)
     }
   }
 }

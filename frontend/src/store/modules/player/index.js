@@ -5,7 +5,9 @@ import playerMutations from './mutations.js'
 export default {
     namespaced: true,
     state() {
-        return{
+        return {
+            position: null,
+            albumID: null,
             deviceID: null,
             image: null,
             volume: 30,

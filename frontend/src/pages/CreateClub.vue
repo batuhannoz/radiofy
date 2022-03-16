@@ -23,41 +23,29 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+import axios from "axios";
+
 export default {
   data() {
     return {
-      receivedDes: "",
-      receivedName: "",
       clubName: "",
       clubDescription: "",
-      socket: null
     };
-  },/*
-  mounted() {
-    this.socket = new WebSocket("ws://localhost:3000/ws")
-    this.socket.onmessage = (msg) => {
-      //create a JSON object
-      let jsonObject = JSON.parse(msg.data);
-      this.receivedName = jsonObject.ClubName;
-      this.receivedDes = jsonObject.ClubDescription;
-      console.log("Received data string");
-    }
+  },
+  computed: {
+    ...mapGetters("player", ["getImage"])
   },
   methods: {
     createClub() {
-      console.log(this.clubName);
-      console.log(this.clubDescription);
-      let msg = {
-        "ClubName": this.clubName,
-        "ClubDescription": this.clubDescription
+        let clubReq = {
+        "image": this.getImage,
+        "name": this.clubName,
+        "description": this.clubDescription
       }
-      this.socket.send(JSON.stringify(msg))
-      this.$router.push("/search")
-    }
-  }*/
-  methods: {
-    createClub() {
-
+      axios.post("http://localhost:3000/create/club", clubReq).then((res) => {
+        this.$router.push("/club/leader/" + res.data.code)
+      })
     }
   }
 }

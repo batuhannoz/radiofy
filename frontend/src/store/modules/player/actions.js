@@ -102,6 +102,8 @@ export default {
     },
     refreshPlayer(context) {
         getCurrentState().then((res) => {
+            context.commit("setPosition", res.item.track_number)
+            context.commit("setAlbumID", res.item.album.uri)
             context.commit("setVolume", res.device.volume_percent);
             context.commit("setShuffle", res.shuffle_state);
             context.commit("setRepeat", res.repeat_state);

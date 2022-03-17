@@ -1,6 +1,6 @@
 <template>
   <div class="text-white">
-    kulübün içindesiniz
+    listening...
   </div>
 </template>
 
@@ -21,8 +21,6 @@ export default {
     this.socket.onmessage = (msg) => {
       //create a JSON object
       let jsonObject = JSON.parse(msg.data);
-      console.log(jsonObject.albumID)
-      console.log(jsonObject.position)
       this.playSong({albumID: jsonObject.albumID, position: jsonObject.position - 1, deviceID: this.getDeviceID})
     }
   },

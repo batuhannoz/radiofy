@@ -34,8 +34,5 @@ export default {
       axios.post("http://localhost:3000/club/leader/" + this.id, request)
     }
   },
-  methods: {
-
-  }
 }
 </script>

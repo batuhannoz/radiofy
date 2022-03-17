@@ -11,6 +11,7 @@ import (
 	"net/http"
 )
 
+// TODO Create a slice of wsConn's so more than one person can connect via websocket
 var wsConn *websocket.Conn
 
 var ClubWithCodes = make(map[string]Club)
@@ -44,11 +45,9 @@ func UpgradeListenersPlayback(playback Playback) {
 	if err != nil {
 		fmt.Printf("error sending playback: %s\n", err.Error())
 	}
-	fmt.Println("hello")
 }
 
 func Listener(ctx *gin.Context) {
-	// TODO Connect to users with websocket and send the song the leader is listening to
 	wsUpgrader.CheckOrigin = func(r *http.Request) bool {
 		// make sure it's OK to access
 		return true
@@ -69,7 +68,6 @@ func ClubLeader(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// TODO send incoming playback to other listeners
 	UpgradeListenersPlayback(playback)
 }
 

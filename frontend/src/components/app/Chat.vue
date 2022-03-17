@@ -17,12 +17,80 @@
         </svg>
       </button>
     </div>
-    <div class="w-full border-4 border-SpotifyGreen" style="height: calc(100% - 48px)">
-      global chat
+    <div class="flex flex-col w-full" style="height: calc(100% - 48px)">
+      <div class=" w-full h-8 font-semibold pt-1 text-center rounded-t-xl bg-SpotifyGreen">Global Chat</div>
+      <div class="relative bg-[#1E1E1E] mt-1.5 mx-1.5 mb-4 rounded-xl" style="height: calc(100% - 32px)">
+        <div class="m-2 flex flex-row">
+          <div class="text-SpotifyGreen">
+            Harlan Loflin:
+          </div>
+          <div>
+             hi!
+          </div>
+        </div>
+        <div class="m-2 flex flex-row">
+          <div class="text-purple-700">
+            Jonathan Weddel:
+          </div>
+          <div>
+            hello
+          </div>
+        </div>
+        <div class="m-2 flex flex-row">
+          <div class="text-blue-700">
+            Marcell Brodrick:
+          </div>
+          <div>
+            hello
+          </div>
+        </div>
+        <div class="m-2">
+          <div class="text-pink-700">
+            Erasmo Piccirillo:
+          </div>
+          Anyone want to suggest a song?
+        </div>
+        <div class="m-2">
+          <div class="text-yellow-700">
+            Marcell Brodrick:
+          </div>
+          I'm listening to NF these days, check it out if you want.
+        </div>
+        <div class="m-2">
+          <div class="text-purple-700">
+            Jonathan Weddel:
+          </div>
+          if you want i can open NF club so we can listen together.
+        </div>
+        <div class="flex flex-row inset-x-0 bottom-0 absolute">
+          <input class="shadow appearance-none border rounded-l-xl w-full py-2 px-3 text-gray-700 leading-tight" type="text" placeholder="Write Message">
+          <button class="btn inline-block px-3 py-2 bg-SpotifyGreen text-white font-medium text-xs leading-tight uppercase rounded-r-xl shadow-md hover:opacity-75 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:opacity-50 active:shadow-lg transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+            <svg viewBox="0 0 24 24" width="24" height="24" class=""><path fill="currentColor" d="M1.101 21.757 23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"></path></svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<style>
+<script>
+export default {
+  data() {
+    return{
+      currentChat: null
+    }
+  },
+  methods: {
+    SetGlobal() {
 
-</style>
+    },
+    SetFriends() {
+
+    },
+    SetClub() {
+
+    }
+  }
+}
+
+</script>

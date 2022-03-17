@@ -127,11 +127,39 @@ func main() {
 		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
 	}
+	club6 := Club{
+		Code:        "666666",
+		Image:       "https://i.scdn.co/image/993cdbae6bf9c21aa653ada2d153c8f05f1b842e",
+		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+	}
+	club7 := Club{
+		Code:        "777777",
+		Image:       "https://i.scdn.co/image/ab67616d00001e026ca5c90113b30c3c43ffb8f4",
+		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+	}
+	club8 := Club{
+		Code:        "888888",
+		Image:       "https://i.scdn.co/image/ab67706c0000bebb443715c10bcde6c10f733874",
+		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+	}
+	club9 := Club{
+		Code:        "999999",
+		Image:       "https://i.scdn.co/image/ab67616d00001e02d9b35d1c4d15c9de88b754a7",
+		Name:        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+		Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+	}
 	ClubWithCodes["111111"] = club1
 	ClubWithCodes["222222"] = club2
 	ClubWithCodes["333333"] = club3
 	ClubWithCodes["444444"] = club4
 	ClubWithCodes["555555"] = club5
+	ClubWithCodes["666666"] = club6
+	ClubWithCodes["777777"] = club7
+	ClubWithCodes["888888"] = club8
+	ClubWithCodes["999999"] = club9
 
 	r := gin.Default()
 	r.Use(cors.Default())

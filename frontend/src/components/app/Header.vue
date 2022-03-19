@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white">
+  <div class="flex items-center justify-center text-white">
     header
   </div>
 </template>

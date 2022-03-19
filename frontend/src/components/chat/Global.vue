@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     SendMessage() {
-      this.ReceviedMessage += this.Message
+      this.ReceviedMessage += " " + this.Message
       this.Message = ""
     }
   }

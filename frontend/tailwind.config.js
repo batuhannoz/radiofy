@@ -4,6 +4,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      boxShadow: {
+        '4xl': '0 8px 24px rgb(0 0 0 / 50%)',
+      },
       colors: {
         SpotifyGreen: '#1db954',
         SpotifyBackround: '#121212',
@@ -13,7 +16,9 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      translate: ({after}) => after(['group-hover'])
+    },
   },
   plugins: [require("@tailwindcss/line-clamp")],
 }

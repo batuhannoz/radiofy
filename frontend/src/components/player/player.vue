@@ -1,8 +1,17 @@
 <template>
   <div class="bg-SpotifyPlayer text-white flex justify-between ">
     <!--current music image-->
-    <div class="flex-grow-0 flex flex-nowrap" style="height: 92px; width: 160px;">
+    <div class="flex-grow-0 flex flex-nowrap" style="height: 92px; width: 140px;">
       <img v-if="getImage" style="height: 92px; width: 92px;" :src="getImage"/>
+    </div>
+    <!--song info-->
+    <div class="absolute h-[92px] ml-[100px] flex flex-col justify-center" style="max-width: 155px">
+      <div class="line-clamp-1">
+        {{getSongName}}
+      </div>
+      <div class="text-xs line-clamp-1">
+        {{getArtistName}}
+      </div>
     </div>
     <!--player buttons-->
     <div class="flex-grow-0 flex flex-col w-[45%] justify-center" style="max-width: 720px;">
@@ -37,7 +46,7 @@
       </div>
     </div>
     <!--volume control & buttons-->
-    <div class="flex-grow-0 flex items-center mr-2 text-center" style="height: 92px; width: 160px;">
+    <div class="flex-grow-0 flex items-center mr-2 text-center" style="height: 92px; width: 140px;">
       <div class="flex-grow flex flex-nowrap items-center justify-between">
         <mute v-if="getVolume === 0"/>
         <volume-low v-else-if="getVolume <= 33"/>

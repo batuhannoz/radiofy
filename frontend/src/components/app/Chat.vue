@@ -1,22 +1,22 @@
 <template>
   <div class="bg-SpotifyPlayer flex text-white">
     <div class="flex justify-around flex-none flex-row h-10 w-full mt-2">
-      <button @click="SetGlobal" v-if="currentChat === 'global'" class="flex bg-SpotifyGreen items-center justify-center rounded-t-full h-12 w-[52px] hover:scale-105">
+      <button @click="SetGlobal" v-if="currentChat === 'global'" class="flex bg-SpotifyGreen items-center justify-center rounded-t-full h-12 w-[52px] hover:scale-105  focus:shadow-lg focus:outline-none focus:ring-0 active:opacity-50 transition duration-150 ease-in-out">
         <world-icon/>
       </button>
-      <button @click="SetGlobal" v-else class="flex bg-SpotifyGreen items-center justify-center rounded-full h-10 w-10 hover:scale-110">
+      <button @click="SetGlobal" v-else class="flex bg-SpotifyGreen items-center justify-center rounded-full h-10 w-10 hover:scale-110 shadow-md hover:opacity-75 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:opacity-50 transition duration-150 ease-in-out">
         <world-icon/>
       </button>
-      <button @click="SetFriends" v-if="currentChat === 'friend'" class="flex bg-purple-700 justify-center items-center rounded-t-full h-12 w-[52px] hover:scale-105">
+      <button @click="SetFriends" v-if="currentChat === 'friend'" class="flex bg-purple-700 justify-center items-center rounded-t-full h-12 w-[52px] hover:scale-105  focus:shadow-lg focus:outline-none focus:ring-0 active:opacity-50 transition duration-150 ease-in-out">
         <friends-icon/>
       </button>
-      <button @click="SetFriends" v-else class="flex bg-purple-700 justify-center items-center rounded-full h-10 w-10 hover:scale-110">
+      <button @click="SetFriends" v-else class="flex bg-purple-700 justify-center items-center rounded-full h-10 w-10 hover:scale-110 shadow-md hover:opacity-75 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:opacity-50 transition duration-150 ease-in-out">
         <friends-icon/>
       </button>
-      <button @click="SetClub" v-if="currentChat === 'club'" class="flex  justify-center items-center bg-[#545454] rounded-t-full h-12 w-[52px] hover:scale-105">
+      <button @click="SetClub" v-if="currentChat === 'club'" class="flex  justify-center items-center bg-[#545454] rounded-t-full h-12 w-[52px] hover:scale-105  focus:shadow-lg focus:outline-none focus:ring-0 active:opacity-50 transition duration-150 ease-in-out">
         <chat-icon/>
       </button>
-      <button @click="SetClub" v-else class="flex justify-center items-center bg-[#545454] rounded-full h-10 w-10 hover:scale-110">
+      <button @click="SetClub" v-else class="flex justify-center items-center bg-[#545454] rounded-full h-10 w-10 hover:scale-110 shadow-md hover:opacity-75 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:opacity-50 transition duration-150 ease-in-out">
         <chat-icon/>
       </button>
     </div>

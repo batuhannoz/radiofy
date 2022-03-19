@@ -28,7 +28,7 @@ export default {
             "user-modify-playback-state " +
             "user-modify-playback-state",
         redirect_uri: "http://localhost:8080/callback",
-        show_dialog: false,
+        show_dialog: true,
       };
       params = new URLSearchParams(params).toString();
       window.location.href = `${url}?${params}`;

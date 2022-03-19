@@ -6,8 +6,8 @@
         <div class="font-bold text-[#b3b3b3]" style="max-width: 145px">Jonathan Weddel</div>
         <div class="line-clamp-1 text-xs text-[#b3b3b3]" style="max-width: 145px">Lana Del Rey - Nationel Anthem</div>
       </div>
-        <div class="flex rounded-full group-hover:bg-SpotifyGreen my-2 mr-2 h-8 w-8 items-center justify-center">
-        <play-icon class="hidden group-hover:block"/>
+        <div class="opacity-0 flex rounded-full group-hover:opacity-100 transition-all bg-SpotifyGreen duration-300 my-2 mr-2 h-8 w-8 items-center justify-center">
+        <play-icon/>
       </div>
     </div>
   </div>

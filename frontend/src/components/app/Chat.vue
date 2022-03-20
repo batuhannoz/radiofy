@@ -22,8 +22,8 @@
     </div>
     <div class="flex flex-col w-full" style="height: calc(100% - 48px)">
       <div v-bind:class="{[currentChatColor]: true}" class="w-full h-10 mt-2 font-semibold pt-1.5 text-center rounded-t-xl">{{chatHeader}}</div>
-      <div class="relative bg-[#1E1E1E] mt-1.5 mx-1.5 mb-4 rounded-xl" style="height: calc(100% - 32px)">
-        <div style="height: calc(100% - 50px)">
+      <div class="relative bg-[#1E1E1E] mt-1.5 mx-1.5 mb-4 rounded-xl" style="height: calc(100% - 4rem)">
+        <div class="h-full">
           <!--chat type check-->
           <club-chat v-if="currentChat === 'club'"/>
           <friends-chat v-else-if="currentChat === 'friend'"/>

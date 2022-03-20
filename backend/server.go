@@ -40,6 +40,7 @@ var wsUpgrader = websocket.Upgrader{
 }
 
 func UpgradeListenersPlayback(playback Playback) {
+
 	byte, err := json.Marshal(playback)
 	err = wsConn.WriteMessage(websocket.TextMessage, byte)
 	if err != nil {

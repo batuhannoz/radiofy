@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {setAccessToken} from "@/api/spotify/player";
+import {setAccessToken, getAvailableDevices} from "@/api/spotify/player";
 import axios from "axios";
 import VueCookies from 'vue-cookies';
 import queryString from 'query-string';
@@ -46,7 +46,9 @@ export default {
             this.setAccessToken(res.data.access_token)
             setAccessToken(res.data.access_token)
             this.refreshPlayer()
-
+            getAvailableDevices().then((res) => {
+              this.setDeviceID(res.devices[0].id)
+            })
             window.onSpotifyWebPlaybackSDKReady = () => {};
             async function waitForSpotifyWebPlaybackSDKToLoad() {
               return new Promise((resolve) => {

@@ -27,7 +27,7 @@ export default {
             "user-read-playback-state " +
             "user-modify-playback-state " +
             "user-modify-playback-state",
-        redirect_uri: "http://localhost:8080/callback",
+        redirect_uri: "http://3.249.223.116:8888/callback",
         show_dialog: true,
       };
       params = new URLSearchParams(params).toString();

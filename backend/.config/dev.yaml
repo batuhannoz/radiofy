@@ -1,0 +1,11 @@
+appname: "radiofy-api-dev"
+server:
+  port: :3000
+  logLevel: "debug"
+
+mysql:
+  host: "localhost"
+  port: "3307"
+  user: "root"
+  password: "password"
+  database: "radiofy"

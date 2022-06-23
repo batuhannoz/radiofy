@@ -29,6 +29,7 @@ func RegisterRoutes(config *config.Config, app *fiber.App) {
 
 	routes := app.Group("/", logMiddleware.Log)
 	{
+		routes.Get("/auth_url")
 		routes.Get("/login", appHandler.Login)
 
 		routesWithJWT := routes.Group("/", jwtMiddleware.Authorize)

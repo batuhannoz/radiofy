@@ -3,8 +3,9 @@ USE radiofy;
 
 CREATE TABLE IF NOT EXISTS `user` (
     `id` INT NOT NULL AUTO_INCREMENT,
-    `create_date` DATETIME DEFAULT(getdate()),
+    `create_date` DATETIME DEFAULT(CURDATE()),
     `spotify_id` VARCHAR(50) NOT NULL,
+    `token` VARCHAR(150) NOT NULL,
     `mail` VARCHAR(100),
     `country` VARCHAR(4),
     `product` VARCHAR(10),

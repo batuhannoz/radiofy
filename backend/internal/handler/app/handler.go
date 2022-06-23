@@ -26,16 +26,6 @@ type AppHandler struct {
 	ChatService ChatService
 }
 
-//
-type user struct {
-	SpotifyID string `json:"spotify_id"`
-	Mail      string `json:"mail"`
-	Country   string `json:"country"`
-	Product   string `json:"product"`
-}
-
-//
-
 func NewHandler(userService UserService, clubService ClubService, chatService ChatService) *AppHandler {
 	return &AppHandler{
 		userService,
@@ -55,6 +45,7 @@ func (app *AppHandler) Login(c *fiber.Ctx) error {
 	user := model.User{
 		Id:         0,
 		CreateDate: date,
+		Token:      usr.Token,
 		SpotifyID:  usr.SpotifyID,
 		Mail:       usr.Mail,
 		Country:    usr.Country,

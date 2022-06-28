@@ -6,32 +6,14 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
   methods: {
     RedirectLoginPage() {
-      const url = "https://accounts.spotify.com/authorize";
-      let params = {
-        response_type: "code",
-        client_id: "d97ea09987ab46c2bb0b4fa4eaae55e1",
-        scope:
-            "user-read-private " +
-            "user-read-email " +
-            "streaming " +
-            "playlist-modify-private " +
-            "playlist-read-collaborative " +
-            "playlist-read-private " +
-            "playlist-modify-public " +
-            "user-read-recently-played " +
-            "user-top-read " +
-            "user-read-playback-position " +
-            "user-read-playback-state " +
-            "user-modify-playback-state " +
-            "user-modify-playback-state",
-        redirect_uri: "http://3.249.223.116:8888/callback",
-        show_dialog: true,
-      };
-      params = new URLSearchParams(params).toString();
-      window.location.href = `${url}?${params}`;
+    axios.get("http://localhost:3000/auth_url").then((res) => {
+      window.location.href = res.data.url;
+    })
     }
   }
 };

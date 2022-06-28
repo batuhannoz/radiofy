@@ -9,6 +9,8 @@ type Config struct {
 	AppName string
 	Server  *Server
 	MySQL   *MySQL
+	Spotify *Spotify
+	JWT     *JWT
 }
 
 func New(configPath, configName string) (*Config, error) {

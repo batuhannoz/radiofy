@@ -1,64 +1,60 @@
 package app
 
 import (
-	"backend/internal/store/model"
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
-	"time"
 )
 
 type UserService interface {
-	Login(request model.User) *model.User
+	//
 }
 
 type ClubService interface {
-	//
+	Clubs() *ClubsResponse
+	CreateClub() *CreateClubResponse
 }
 
 type ChatService interface {
 	//
 }
 
+type AuthService interface {
+	AuthURL() *AuthURLResponse
+	CompleteAuth(ctx *fiber.Ctx) *TokenResponse
+}
+
 type AppHandler struct {
 	userService UserService
 	clubService ClubService
 	ChatService ChatService
+	authService AuthService
 }
 
-func NewHandler(userService UserService, clubService ClubService, chatService ChatService) *AppHandler {
+func NewHandler(userService UserService, clubService ClubService, chatService ChatService, authService AuthService) *AppHandler {
 	return &AppHandler{
 		userService,
 		clubService,
 		chatService,
+		authService,
 	}
 }
 
-func (app *AppHandler) Login(c *fiber.Ctx) error {
-	usr := user{}
-	err := c.BodyParser(&usr)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(usr)
-	date := time.Now()
-	user := model.User{
-		Id:         0,
-		CreateDate: date,
-		Token:      usr.Token,
-		SpotifyID:  usr.SpotifyID,
-		Mail:       usr.Mail,
-		Country:    usr.Country,
-		Product:    usr.Product,
-	}
-	a := app.userService.Login(user)
-	return c.Status(http.StatusOK).JSON(a)
+func (app *AppHandler) AuthURL(c *fiber.Ctx) error {
+	url := app.authService.AuthURL()
+	return c.Status(http.StatusOK).JSON(url)
+}
+
+func (app *AppHandler) CompleteAuth(c *fiber.Ctx) error {
+	token := app.authService.CompleteAuth(c)
+	return c.Status(http.StatusOK).JSON(token)
 }
 
 func (app *AppHandler) Clubs(c *fiber.Ctx) error {
-	return nil
+	Clubs := app.clubService.Clubs()
+	return c.Status(http.StatusOK).JSON(Clubs)
 }
 
-func (app *AppHandler) Logout(c *fiber.Ctx) error {
-	return nil
+func (app *AppHandler) CreateClub(c *fiber.Ctx) error {
+	Club := app.clubService.CreateClub()
+	return c.Status(http.StatusOK).JSON(Club)
 }

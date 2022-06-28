@@ -15,7 +15,20 @@ func NewUserStore(connection *gorm.DB) *UserStore {
 	}
 }
 
-func (db *UserStore) Login(request *model.User) *model.User {
-	db.connection.Save(request)
-	return request
+func (u *UserStore) SaveUser(user model.User) *model.User {
+	u.connection.Where(model.User{SpotifyID: user.SpotifyID}).FirstOrCreate(&user)
+	return &user
+}
+
+func (u *UserStore) AddUserLogon(userLogon *model.UserLogon) *model.UserLogon {
+	var user model.UserLogon
+	u.connection.Where("user_id = ?", userLogon.UserID).Last(&user)
+	if user.UserID != 0 {
+		var user model.UserLogon
+		u.connection.Where("user_id = ?", userLogon.UserID).Last(&user).Update("token", userLogon.Token)
+	} else {
+		u.connection.Save(userLogon)
+
+	}
+	return userLogon
 }

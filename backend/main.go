@@ -22,7 +22,7 @@ func main() {
 
 	internal.RegisterRoutes(conf, app)
 
-	err = app.Listen(":3000")
+	err = app.Listen(conf.Server.Port)
 	if err != nil {
 		fmt.Println(err)
 	}

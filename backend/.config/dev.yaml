@@ -1,10 +1,20 @@
 appname: "radiofy-api-dev"
+
+spotify:
+  clientID: "d97ea09987ab46c2bb0b4fa4eaae55e1"
+  clientSecret: "cda1b2e945234060a43f0791f4839397"
+  redirectURI: "http://localhost:8080/callback"
+
+jwt:
+  secret: "?=)^g+%v('!b%&34&s^&2)?/67"
+  expires: 240 # hour
+
 server:
   port: :3000
   logLevel: "debug"
 
 mysql:
-  host: "localhost"
+  host:  "localhost"
   port: "3307"
   user: "root"
   password: "password"

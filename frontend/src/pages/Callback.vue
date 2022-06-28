@@ -6,7 +6,6 @@
 import {setAccessToken, getAvailableDevices} from "@/api/spotify/player";
 import axios from "axios";
 import VueCookies from 'vue-cookies';
-import queryString from 'query-string';
 import {mapActions} from 'vuex';
 
 export default {
@@ -14,37 +13,30 @@ export default {
     ...mapActions("auth", ["setAccessToken"]),
     ...mapActions("player", ["setDeviceID", "refreshPlayer"]),
     token() {
+      console.log("hello")
       const urlSearchParams = new URLSearchParams(window.location.search);
       const params = Object.fromEntries(urlSearchParams.entries());
       if (!params.code) {
         console.log("Unexpected Callback")
         return;
       }
+      console.log(params)
       axios
-          .post(
-              "https://accounts.spotify.com/api/token",
-              queryString.stringify({
-                code: params.code,
-                redirect_uri: "http://localhost:8080/callback",
-                grant_type: "authorization_code",
-              }),
+          .get(
+              "http://localhost:3000/complete_auth",
               {
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                  Authorization:
-                      "Basic " +
-                      new Buffer(
-                          "d97ea09987ab46c2bb0b4fa4eaae55e1" +
-                          ":" +
-                          "cda1b2e945234060a43f0791f4839397"
-                      ).toString("base64"),
-                },
+                params: {
+                  code: params.code,
+                  state: params.state,
+                  error: params.error
+                }
               }
           )
           .then((res) => {
-            VueCookies.set('access_token', res.data.access_token, "1h")
-            this.setAccessToken(res.data.access_token)
-            setAccessToken(res.data.access_token)
+            VueCookies.set('access_token', res.data.accessToken, "1h")
+            VueCookies.set('refresh_token', res.data.refreshToken, "1h")
+            this.setAccessToken(res.data.accessToken)
+            setAccessToken(res.data.accessToken)
             this.refreshPlayer()
             getAvailableDevices().then((res) => {
               this.setDeviceID(res.devices[0].id)

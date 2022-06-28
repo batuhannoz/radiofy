@@ -4,8 +4,9 @@ USE radiofy;
 CREATE TABLE IF NOT EXISTS `user` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `create_date` DATETIME DEFAULT(CURDATE()),
+    `image` VARCHAR(150),
+    `display_name` VARCHAR(100),
     `spotify_id` VARCHAR(50) NOT NULL,
-    `token` VARCHAR(150) NOT NULL,
     `mail` VARCHAR(100),
     `country` VARCHAR(4),
     `product` VARCHAR(10),
@@ -37,3 +38,13 @@ CREATE TABLE IF NOT EXISTS `club_song` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`club_id`) REFERENCES `club`(`id`)
 );
+
+CREATE TABLE IF NOT EXISTS `user_logon` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `create_date` DATETIME DEFAULT(CURDATE()),
+    `token` VARCHAR(500),
+    `is_logout` BOOL NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`)
+)

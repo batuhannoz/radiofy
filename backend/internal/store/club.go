@@ -15,6 +15,11 @@ func NewClubStore(connection *gorm.DB) *ClubStore {
 	}
 }
 
-func (club *ClubStore) Clubs() *model.Club {
+func (c *ClubStore) Clubs() *model.Club {
 	return nil
+}
+
+func (c *ClubStore) CreateClub(club *model.Club) *model.Club {
+	c.connection.Save(&club)
+	return club
 }

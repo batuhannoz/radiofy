@@ -22,7 +22,8 @@ type ClubsResponse struct {
 }
 
 type CreateClubResponse struct {
-	ID          string `json:"id"`
+	Code        string `json:"code"`
+	Name        string `json:"name"`
 	Image       string `json:"image"`
 	Description string `json:"description"`
 }

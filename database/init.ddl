@@ -16,8 +16,10 @@ CREATE TABLE IF NOT EXISTS `user` (
 CREATE TABLE IF NOT EXISTS `club` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `owner_id` INT NOT NULL,
+    `club_code` VARCHAR(6) NOT NULL,
     `name` VARCHAR(50) NOT NULL,
     `description` VARCHAR(150),
+    `image` VARCHAR(100),
     PRIMARY KEY (`id`),
     FOREIGN KEY (`owner_id`) REFERENCES `user`(`id`)
 );

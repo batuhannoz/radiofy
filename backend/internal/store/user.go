@@ -20,17 +20,10 @@ func (u *UserStore) SaveUser(user model.User) *model.User {
 	return &user
 }
 
-func (u *UserStore) AddUserLogon(userLogon *model.UserLogon) *model.UserLogon {
-	var user model.UserLogon
-	u.connection.Where("user_id = ?", userLogon.UserID).Last(&user)
-	if user.UserID != 0 {
-		var user model.UserLogon
-		u.connection.Where("user_id = ?", userLogon.UserID).Last(&user).Update("token", userLogon.Token)
-	} else {
-		u.connection.Save(userLogon)
-
-	}
-	return userLogon
+func (u *UserStore) GetUserById(userId uint64) *model.User {
+	var user model.User
+	u.connection.First(&user, userId)
+	return &user
 }
 
 func (u *UserStore) GetUserActiveUserLogon(userId uint64) *model.UserLogon {
@@ -39,8 +32,7 @@ func (u *UserStore) GetUserActiveUserLogon(userId uint64) *model.UserLogon {
 	return &user
 }
 
-func (u *UserStore) GetUserById(userId uint64) *model.User {
-	var user model.User
-	u.connection.First(&user, userId)
-	return &user
+func (u *UserStore) AddUserLogon(userLogon *model.UserLogon) *model.UserLogon {
+	u.connection.Save(&userLogon)
+	return userLogon
 }

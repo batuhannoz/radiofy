@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
 )
@@ -11,7 +12,7 @@ type UserService interface {
 
 type ClubService interface {
 	Clubs() *ClubsResponse
-	CreateClub() *CreateClubResponse
+	CreateClub(ctx *fiber.Ctx, ClubRequest CreateClubRequest) *CreateClubResponse
 }
 
 type ChatService interface {
@@ -50,12 +51,17 @@ func (app *AppHandler) CompleteAuth(c *fiber.Ctx) error {
 }
 
 func (app *AppHandler) Clubs(c *fiber.Ctx) error {
-	//Clubs := app.clubService.Clubs()
-	//return c.Status(http.StatusOK).JSON(Clubs)
-	return c.Status(http.StatusOK).JSON("pong")
+	Clubs := app.clubService.Clubs()
+	return c.Status(http.StatusOK).JSON(Clubs)
 }
 
 func (app *AppHandler) CreateClub(c *fiber.Ctx) error {
-	Club := app.clubService.CreateClub()
+	var ClubRequest CreateClubRequest
+	err := c.BodyParser(&ClubRequest)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	Club := app.clubService.CreateClub(c, ClubRequest)
 	return c.Status(http.StatusOK).JSON(Club)
 }

@@ -11,9 +11,16 @@ import (
 	"time"
 )
 
+type UserStore interface {
+	SaveUser(user model.User) *model.User
+	AddUserLogon(userLogon *model.UserLogon) *model.UserLogon
+	GetUserActiveUserLogon(userId uint64) *model.UserLogon
+	GetUserById(userId uint64) *model.User
+}
+
 type UserService struct {
 	Config    *config.Config
-	UserStore *store.UserStore
+	UserStore UserStore
 }
 
 func NewUserService(userStore *store.UserStore, config *config.Config) *UserService {
@@ -56,4 +63,8 @@ func (u *UserService) generateJWTToken(userID uint64) string {
 
 func (u *UserService) addUserLogon(userLogon model.UserLogon) {
 	u.UserStore.AddUserLogon(&userLogon)
+}
+
+func (u *UserService) GetUserActiveUserLogon(userId uint64) (*model.User, *model.UserLogon) {
+	return u.UserStore.GetUserById(userId), u.UserStore.GetUserActiveUserLogon(userId)
 }

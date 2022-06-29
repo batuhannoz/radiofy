@@ -46,7 +46,7 @@ func RegisterRoutes(config *config.Config, app *fiber.App) {
 	appHandler := appHandler.NewHandler(userService, clubService, chatService, authService)
 
 	logMiddleware := middleware.NewLogMiddleware(logService)
-	jwtMiddleware := middleware.NewJWTMiddleware(userService, clubService, chatService)
+	jwtMiddleware := middleware.NewJWTMiddleware(config, userService, clubService, chatService)
 
 	routes := app.Group("/", logMiddleware.Log)
 	{

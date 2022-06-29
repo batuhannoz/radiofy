@@ -50,8 +50,9 @@ func (app *AppHandler) CompleteAuth(c *fiber.Ctx) error {
 }
 
 func (app *AppHandler) Clubs(c *fiber.Ctx) error {
-	Clubs := app.clubService.Clubs()
-	return c.Status(http.StatusOK).JSON(Clubs)
+	//Clubs := app.clubService.Clubs()
+	//return c.Status(http.StatusOK).JSON(Clubs)
+	return c.Status(http.StatusOK).JSON("pong")
 }
 
 func (app *AppHandler) CreateClub(c *fiber.Ctx) error {

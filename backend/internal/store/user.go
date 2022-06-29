@@ -32,3 +32,15 @@ func (u *UserStore) AddUserLogon(userLogon *model.UserLogon) *model.UserLogon {
 	}
 	return userLogon
 }
+
+func (u *UserStore) GetUserActiveUserLogon(userId uint64) *model.UserLogon {
+	var user model.UserLogon
+	u.connection.Where("user_id = ?", userId).Last(&user)
+	return &user
+}
+
+func (u *UserStore) GetUserById(userId uint64) *model.User {
+	var user model.User
+	u.connection.First(&user, userId)
+	return &user
+}

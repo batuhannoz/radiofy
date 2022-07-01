@@ -4,5 +4,8 @@ export default {
     },
     setRefreshToken(context, refreshToken) {
         context.commit("setRefreshToken", refreshToken)
+    },
+    setRadiofyToken(context, refreshToken) {
+        context.commit("setRadiofyToken", refreshToken)
     }
 }

@@ -42,6 +42,29 @@ func NewJWTMiddleware(config *config.Config, userService UserService, clubServic
 func (j *JWT) Authorize(c *fiber.Ctx) error {
 	token := string(c.Request().Header.Peek("Authorization"))
 	if token == "" {
+		token = c.Query("token")
+	}
+	if token == "" {
+		return c.Status(http.StatusBadRequest).JSON("no token provided")
+	}
+	userId, errToken := j.getUserId(token)
+	if errToken != nil {
+		return c.Status(http.StatusUnauthorized).JSON("token is not valid")
+	}
+
+	user, userLogon := j.UserService.GetUserActiveUserLogon(userId)
+	if userLogon.Token != token || userLogon.IsLogout == true {
+		return c.Status(http.StatusUnauthorized).JSON("token valid but not active")
+	}
+
+	c.Locals("user", user)
+	c.Next()
+	return nil
+}
+
+func (j *JWT) AuthorizeSSE(c *fiber.Ctx) error {
+	token := string(c.Query("token"))
+	if token == "" {
 		return c.Status(http.StatusBadRequest).JSON("no token provided")
 	}
 	userId, errToken := j.getUserId(token)

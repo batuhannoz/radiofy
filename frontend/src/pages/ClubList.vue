@@ -42,7 +42,7 @@ export default {
     PlayIcon
   },
   computed: {
-    ...mapGetters("auth", ["getAccessToken"]),
+    ...mapGetters("auth", ["getAccessToken", "getRadiofyToken"]),
     ...mapGetters("player", ["getDeviceID"])
   },
   data() {
@@ -51,7 +51,10 @@ export default {
     }
   },
   mounted() {
-    axios.get('http://localhost:3000/club/list').then((res) => {
+    axios.get('http://localhost:3000/clubs',{
+      headers: {
+        "Authorization": this.getRadiofyToken
+    }}).then((res) => {
       console.log(res)
       this.clubList = res.data
     })

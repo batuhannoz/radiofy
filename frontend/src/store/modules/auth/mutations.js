@@ -4,5 +4,8 @@ export default {
     },
     setRefreshToken(state, refreshToken) {
         state.refreshToken = refreshToken;
+    },
+    setRadiofyToken(state, radiofyToken) {
+        state.radiofyToken = radiofyToken;
     }
 }

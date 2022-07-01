@@ -4,6 +4,7 @@ import (
 	"backend/internal/handler/app"
 	"backend/internal/store/model"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/websocket/v2"
 	"strconv"
 )
 
@@ -14,11 +15,14 @@ type ClubStore interface {
 
 type ClubService struct {
 	ClubStore
+	writerByID map[uint64]*websocket.Conn
 }
 
 func NewClubService(clubStore ClubStore) *ClubService {
+	writer := make(map[uint64]*websocket.Conn)
 	return &ClubService{
 		clubStore,
+		writer,
 	}
 }
 
@@ -53,4 +57,14 @@ func (c *ClubService) CreateClub(ctx *fiber.Ctx, ClubRequest app.CreateClubReque
 		Image:       CreatedClub.Image,
 		Description: CreatedClub.Description,
 	}
+}
+
+func (c *ClubService) ListenSong(ws *websocket.Conn) error {
+	user := ws.Locals("user").(*model.User)
+	c.writerByID[user.Id] = ws
+	return nil
+}
+
+func (c *ClubService) UptadeListenersPlayback() {
+
 }

@@ -10,10 +10,9 @@ import {mapActions} from 'vuex';
 
 export default {
   methods: {
-    ...mapActions("auth", ["setAccessToken"]),
+    ...mapActions("auth", ["setAccessToken", "setRadiofyToken"]),
     ...mapActions("player", ["setDeviceID", "refreshPlayer"]),
     token() {
-      console.log("hello")
       const urlSearchParams = new URLSearchParams(window.location.search);
       const params = Object.fromEntries(urlSearchParams.entries());
       if (!params.code) {
@@ -33,6 +32,7 @@ export default {
               }
           )
           .then((res) => {
+            this.setRadiofyToken(res.data.radiofyToken)
             VueCookies.set('access_token', res.data.accessToken, "1h")
             VueCookies.set('refresh_token', res.data.refreshToken, "1h")
             this.setAccessToken(res.data.accessToken)

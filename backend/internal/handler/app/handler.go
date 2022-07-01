@@ -11,7 +11,7 @@ type UserService interface {
 }
 
 type ClubService interface {
-	Clubs() *ClubsResponse
+	Clubs() *[]ClubsResponse
 	CreateClub(ctx *fiber.Ctx, ClubRequest CreateClubRequest) *CreateClubResponse
 }
 

@@ -14,8 +14,7 @@ type TokenResponse struct {
 }
 
 type ClubsResponse struct {
-	ID          string `json:"id"`
-	ClubLeader  string `json:"clubLeader"`
+	ID          int    `json:"id"`
 	Image       string `json:"image"`
 	Name        string `json:"name"`
 	Description string `json:"description"`

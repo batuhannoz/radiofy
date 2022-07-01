@@ -1,14 +1,14 @@
 package service
 
 import (
-	"backend/internal/functions"
 	"backend/internal/handler/app"
 	"backend/internal/store/model"
 	"github.com/gofiber/fiber/v2"
+	"strconv"
 )
 
 type ClubStore interface {
-	Clubs() *model.Club
+	Clubs() *[]model.Club
 	CreateClub(club *model.Club) *model.Club
 }
 
@@ -22,8 +22,18 @@ func NewClubService(clubStore ClubStore) *ClubService {
 	}
 }
 
-func (c *ClubService) Clubs() *app.ClubsResponse {
-	return nil
+func (c *ClubService) Clubs() *[]app.ClubsResponse {
+	clubs := c.ClubStore.Clubs()
+	var clubsResponse []app.ClubsResponse
+	for _, b := range *clubs {
+		clubsResponse = append(clubsResponse, app.ClubsResponse{
+			ID:          b.Id,
+			Image:       b.Image,
+			Name:        b.Name,
+			Description: b.Description,
+		})
+	}
+	return &clubsResponse
 }
 
 func (c *ClubService) CreateClub(ctx *fiber.Ctx, ClubRequest app.CreateClubRequest) *app.CreateClubResponse {
@@ -33,12 +43,12 @@ func (c *ClubService) CreateClub(ctx *fiber.Ctx, ClubRequest app.CreateClubReque
 		Id:          0,
 		OwnerID:     user.Id,
 		Name:        ClubRequest.Name,
+		IsActive:    true,
 		Description: ClubRequest.Description,
 		Image:       ClubRequest.Image,
-		ClubCode:    functions.EncodeToString(6),
 	})
 	return &app.CreateClubResponse{
-		Code:        CreatedClub.ClubCode,
+		Code:        strconv.Itoa(CreatedClub.Id),
 		Name:        CreatedClub.Name,
 		Image:       CreatedClub.Image,
 		Description: CreatedClub.Description,

@@ -55,6 +55,8 @@ func RegisterRoutes(config *config.Config, app *fiber.App) {
 
 		routesWithJWT := routes.Group("/", jwtMiddleware.Authorize)
 		{
+			//routesWithJWT.Get("/club/:id/listen", appHandler.ListenSong)
+			//routesWithJWT.Post("/club/:id/song", appHandler.ChangeSong)
 			routesWithJWT.Get("/clubs", appHandler.Clubs)
 			routesWithJWT.Post("/create_club", appHandler.CreateClub)
 		}

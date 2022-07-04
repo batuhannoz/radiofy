@@ -17,6 +17,7 @@ export default {
     currentSong() {
       return this.getSongID
     },
+    ...mapGetters("auth", ["getRadiofyToken"]),
     ...mapGetters("player", ["getSongID", "getSongName", "getArtistName", "getImage", "getProgressMS", "getAlbumID", "getPosition"])
   },
   watch: {
@@ -31,7 +32,11 @@ export default {
         "image": this.getImage,
         "progressMS": this.getProgressMS,
       }
-      axios.post("http://localhost:3000/club/leader/" + this.id, request)
+      axios.post("http://localhost:3000/club/" + this.id + "/change", request, {
+        headers: {
+          "Authorization": this.getRadiofyToken
+        }
+      })
     }
   },
 }

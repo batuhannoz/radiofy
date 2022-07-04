@@ -34,6 +34,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("auth", ["getRadiofyToken"]),
     ...mapGetters("player", ["getImage"])
   },
   methods: {
@@ -43,7 +44,11 @@ export default {
         "name": this.clubName,
         "description": this.clubDescription
       }
-      axios.post("http://localhost:3000/create/club", clubReq).then((res) => {
+      axios.post(
+          "http://localhost:3000/club/create",
+          clubReq,
+          {headers: {"Authorization": this.getRadiofyToken}
+      }).then((res) => {
         this.$router.push("/club/leader/" + res.data.code)
       })
     }

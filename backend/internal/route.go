@@ -7,7 +7,6 @@ import (
 	"backend/internal/service"
 	"backend/internal/store"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/websocket/v2"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 )
 
@@ -56,10 +55,10 @@ func RegisterRoutes(config *config.Config, app *fiber.App) {
 
 		routesWithJWT := routes.Group("/", jwtMiddleware.Authorize)
 		{
-			routesWithJWT.Get("/clubs", appHandler.Clubs)
-			routesWithJWT.Get("/club/:id/listen", websocket.New(appHandler.ListenSong))
-			routesWithJWT.Post("/club/:id/song", appHandler.ChangeSong)
-			routesWithJWT.Post("/create_club", appHandler.CreateClub)
+			routesWithJWT.Get("/club/list", appHandler.Clubs)
+			routesWithJWT.Post("/club/create", appHandler.CreateClub)
+			routesWithJWT.Get("/club/:id/song", appHandler.CurrentSong)
+			routesWithJWT.Post("/club/:id/change", appHandler.ChangeSong)
 		}
 	}
 }

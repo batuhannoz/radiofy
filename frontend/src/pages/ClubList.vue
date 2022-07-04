@@ -13,7 +13,7 @@
       </div>
     </button>
     <!--Active Clubs-->
-    <button @click="RedirectClub(items.code)" v-for="items in clubList" :key="items" class="group duration-300 ease-in-out hover:bg-[#2a2a2a] flex flex-col m-auto my-2 h-64 w-48 bg-SpotifyPlayer rounded-lg p-3.5">
+    <button @click="RedirectClub(items.id)" v-for="items in clubList" :key="items.id" class="group duration-300 ease-in-out hover:bg-[#2a2a2a] flex flex-col m-auto my-2 h-64 w-48 bg-SpotifyPlayer rounded-lg p-3.5">
       <div class="relative h-[165px] w-[165px]">
         <img :src="items.image" class="relative group-hover:shadow-4xl rounded-md"/>
         <div class="transition-all ease-in-out duration-[400ms] group-hover:shadow-4xl transform opacity-0 group-hover:opacity-100 group-hover:bottom-1.5 absolute  group-hover:flex group-hover:block right-1 bottom-0 bg-SpotifyGreen w-11 h-11 rounded-full flex items-center justify-center">
@@ -51,10 +51,12 @@ export default {
     }
   },
   mounted() {
-    axios.get('http://localhost:3000/clubs',{
+    axios.get('http://localhost:3000/club/list',{
       headers: {
         "Authorization": this.getRadiofyToken
     }}).then((res) => {
+      console.log(res)
+      console.log(res)
       console.log(res)
       this.clubList = res.data
     })

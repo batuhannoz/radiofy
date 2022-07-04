@@ -10,5 +10,5 @@ type Club struct {
 	IsActive    bool   `gorm:"type:bool" json:"is_active"`
 	Name        string `gorm:"type:varchar(50)" json:"name"`
 	Description string `gorm:"type:varchar(150)" json:"description"`
-	Image       string `gorm:"type:varchar(100)" json:"image"`
+	Image       string `gorm:"type:varchar(400)" json:"image"`
 }

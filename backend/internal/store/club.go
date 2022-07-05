@@ -26,7 +26,7 @@ func (c *ClubStore) Clubs() *[]model.Club {
 	return &clubs
 }
 
-func (c *ClubStore) ClubByOwnerID(ownerID int) *model.Club {
+func (c *ClubStore) ClubByOwnerID(ownerID uint64) *model.Club {
 	var club model.Club
 	c.connection.Where("owner_id = ?", ownerID).Last(&club)
 	return &club
@@ -34,7 +34,7 @@ func (c *ClubStore) ClubByOwnerID(ownerID int) *model.Club {
 
 func (c *ClubStore) ClubListeners(ClubID int) *[]model.Listener {
 	var listeners []model.Listener
-	c.connection.Raw("SELECT * FROM listener WHERE club_id = ?", ClubID).Scan(&listeners)
+	c.connection.Model(&listeners).Where("club_id = ?", ClubID).Where("is_active = ?", true).Scan(&listeners)
 	return &listeners
 }
 
@@ -52,4 +52,8 @@ func (c *ClubStore) CurrentSongByClubID(clubID int) *model.ClubSong {
 func (c *ClubStore) ChangeClubSong(clubSong *model.ClubSong) *model.ClubSong {
 	c.connection.Save(&clubSong)
 	return clubSong
+}
+
+func (c *ClubStore) DeactivateListener(userID uint64) {
+	c.connection.Model(&model.Listener{}).Where("user_id = ?", userID).UpdateColumn("is_active", false)
 }

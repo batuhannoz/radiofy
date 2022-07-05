@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/websocket/v2"
 	"net/http"
 )
 
@@ -15,6 +16,7 @@ type ClubService interface {
 	CreateClub(ctx *fiber.Ctx, ClubRequest CreateClubRequest) *CreateClubResponse
 	CurrentSong(ctx *fiber.Ctx) *PlaybackResponse
 	ChangeSong(ctx *fiber.Ctx, SongRequest *PlaybackRequest) error
+	Listener(ws *websocket.Conn)
 }
 
 type ChatService interface {
@@ -79,7 +81,14 @@ func (app *AppHandler) ChangeSong(ctx *fiber.Ctx) error {
 	if err != nil {
 		fmt.Println(err)
 	}
-	app.clubService.ChangeSong(ctx, &SongRequest)
+	err = app.clubService.ChangeSong(ctx, &SongRequest)
+	if err != nil {
+		fmt.Println(err)
+	}
 	ctx.Status(http.StatusOK)
 	return nil
+}
+
+func (app *AppHandler) Listener(ws *websocket.Conn) {
+	app.clubService.Listener(ws)
 }

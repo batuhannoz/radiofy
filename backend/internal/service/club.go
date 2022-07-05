@@ -7,28 +7,36 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
 	"strconv"
+	"time"
 )
 
 type ClubStore interface {
 	Clubs() *[]model.Club
 	CreateClub(club *model.Club) *model.Club
-	ClubByOwnerID(ownerID int) *model.Club
+	ClubByOwnerID(ownerID uint64) *model.Club
 	ClubListeners(ClubID int) *[]model.Listener
 	AddListener(listener *model.Listener) *model.Listener
 	CurrentSongByClubID(clubID int) *model.ClubSong
 	ChangeClubSong(clubSong *model.ClubSong) *model.ClubSong
+	DeactivateListener(listenerID uint64)
 }
+
+type Client struct {
+	id       string
+	ip       string
+	username string
+	ws       *websocket.Conn
+}
+
+var Clients = make(map[uint64]*Client)
 
 type ClubService struct {
 	ClubStore
-	writerByUserID map[uint64]websocket.Conn
 }
 
 func NewClubService(clubStore ClubStore) *ClubService {
-	writer := make(map[uint64]websocket.Conn)
 	return &ClubService{
 		clubStore,
-		writer,
 	}
 }
 
@@ -84,7 +92,7 @@ func (c *ClubService) CurrentSong(ctx *fiber.Ctx) *app.PlaybackResponse {
 
 func (c *ClubService) ChangeSong(ctx *fiber.Ctx, request *app.PlaybackRequest) error {
 	user := ctx.Locals("user").(*model.User)
-	club := c.ClubStore.ClubByOwnerID(int(user.Id))
+	club := c.ClubStore.ClubByOwnerID(user.Id)
 	if strconv.Itoa(club.Id) != ctx.Params("id") {
 		fmt.Println("wrong request")
 	}
@@ -99,5 +107,52 @@ func (c *ClubService) ChangeSong(ctx *fiber.Ctx, request *app.PlaybackRequest) e
 		Image:      request.Image,
 		ProgressMS: request.ProgressMS,
 	})
+	c.UpdateListenersPlayback(user.Id, request)
 	return nil
+}
+
+func (c *ClubService) Listener(ws *websocket.Conn) {
+	user := ws.Locals("user").(*model.User)
+	c.ClubStore.AddListener(&model.Listener{
+		Id:       0,
+		UserID:   user.Id,
+		ClubID:   ws.Params("id"),
+		IsActive: true,
+	})
+	newClient := Client{
+		id:       "",
+		ip:       ws.RemoteAddr().String(),
+		username: "",
+		ws:       ws,
+	}
+	Clients[user.Id] = &newClient
+	Clients[user.Id].ws.SetCloseHandler(func(code int, text string) error {
+		c.ClubStore.DeactivateListener(user.Id)
+		delete(Clients, user.Id)
+		return nil
+	})
+	newClient.StartListening(user.Id)
+}
+
+func (client *Client) StartListening(userID uint64) {
+	for {
+		var msg string
+		err := Clients[userID].ws.ReadJSON(&msg)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		time.Sleep(5000)
+	}
+}
+
+func (c *ClubService) UpdateListenersPlayback(ownerID uint64, request *app.PlaybackRequest) {
+	club := c.ClubStore.ClubByOwnerID(ownerID)
+	listeners := c.ClubStore.ClubListeners(club.Id)
+	for _, listener := range *listeners {
+		err := Clients[listener.UserID].ws.WriteJSON(&request)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 }

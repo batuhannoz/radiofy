@@ -45,6 +45,9 @@ func (c *ChatService) Run(ws *websocket.Conn, user *model.User) {
 			fmt.Println(err)
 			return
 		}
+		if msg.Message == "" {
+			continue
+		}
 		for _, clients := range c.GlobalChatClients {
 			clients.ws.WriteJSON(app.MessageResponse{
 				Image:       user.Image,

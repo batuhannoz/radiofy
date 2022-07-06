@@ -51,13 +51,10 @@ export default {
     }
   },
   mounted() {
-    axios.get('http://localhost:3000/club/list',{
+    axios.get('http://192.168.1.127:3000/club/list',{
       headers: {
         "Authorization": this.getRadiofyToken
     }}).then((res) => {
-      console.log(res)
-      console.log(res)
-      console.log(res)
       this.clubList = res.data
     })
   },

@@ -3,7 +3,7 @@ appname: "radiofy-api-dev"
 spotify:
   clientID: "d97ea09987ab46c2bb0b4fa4eaae55e1"
   clientSecret: "cda1b2e945234060a43f0791f4839397"
-  redirectURI: "http://localhost:8080/callback"
+  redirectURI: "http://192.168.1.127:8080/callback"
 
 jwt:
   secret: "?=)^g+%v('!b%&34&s^&2)?/67"

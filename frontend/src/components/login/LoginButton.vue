@@ -11,7 +11,7 @@ import axios from "axios";
 export default {
   methods: {
     RedirectLoginPage() {
-    axios.get("http://localhost:3000/auth_url").then((res) => {
+    axios.get("http://192.168.1.127:3000/auth_url").then((res) => {
       window.location.href = res.data.url;
     })
     }

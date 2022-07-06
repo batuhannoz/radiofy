@@ -7,6 +7,9 @@ import CreateClub from '../pages/CreateClub';
 import ClubLeader from "@/pages/ClubLeader";
 import PageNotFound from '../pages/PageNotFound';
 import ClubListener from "@/pages/ClubListener";
+import VueCookies from "vue-cookies";
+
+
 
 const router = createRouter({
     history: createWebHistory(),
@@ -22,12 +25,16 @@ const router = createRouter({
 });
 
 router.beforeEach(function(to, from, next,) {
-    if(to.path === "/login" || to.path === "/callback") {
+    if (store.getters["auth/getAccessToken"] && store.getters["auth/getRadiofyToken"]) {
         next();
-    } else if(!store.getters["auth/getAccessToken"]) {
-        router.push("/login");
     }
-    next();
+    else if (VueCookies.get("access_token") && VueCookies.get("radiofy_token")) {
+        store.dispatch("auth/setRadiofyToken", VueCookies.get("radiofy_token"))
+        store.dispatch("auth/setAccessToken", VueCookies.get("access_token"))
+        router.push("/callback")
+    } else if (to.path === "/login" || to.path === "/callback") {
+        router.push("/login")
+    }
 })
 
 export default router;

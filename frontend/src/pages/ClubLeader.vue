@@ -32,7 +32,7 @@ export default {
         "image": this.getImage,
         "progressMS": this.getProgressMS,
       }
-      axios.post("http://localhost:3000/club/" + this.id + "/change", request, {
+      axios.post("http://192.168.1.127:3000/club/" + this.id + "/change", request, {
         headers: {
           "Authorization": this.getRadiofyToken
         }

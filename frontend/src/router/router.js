@@ -33,6 +33,8 @@ router.beforeEach(function(to, from, next,) {
         store.dispatch("auth/setAccessToken", VueCookies.get("access_token"))
         router.push("/callback")
     } else if (to.path === "/login" || to.path === "/callback") {
+        next()
+    } else {
         router.push("/login")
     }
 })

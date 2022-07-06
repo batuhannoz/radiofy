@@ -35,6 +35,19 @@ func (u *UserService) SaveUser(token *oauth2.Token) *model.User {
 	if err != nil {
 		fmt.Println(err)
 	}
+	imgLength := len(user.Images)
+	if imgLength == 0 {
+		return u.UserStore.SaveUser(model.User{
+			Id:          0,
+			DisplayName: user.DisplayName,
+			CreateDate:  time.Now(),
+			Image:       "",
+			SpotifyID:   user.Id,
+			Mail:        user.Email,
+			Country:     user.Country,
+			Product:     user.Product,
+		})
+	}
 	return u.UserStore.SaveUser(model.User{
 		Id:          0,
 		DisplayName: user.DisplayName,

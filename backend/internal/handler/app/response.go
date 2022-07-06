@@ -36,3 +36,9 @@ type PlaybackResponse struct {
 	Image      string `json:"image"`
 	ProgressMS int    `json:"progressMS"`
 }
+
+type MessageResponse struct {
+	Image       string `json:"image"`
+	DisplayName string `json:"displayName"`
+	Message     string `json:"message"`
+}

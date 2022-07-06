@@ -15,3 +15,7 @@ type PlaybackRequest struct {
 	Image      string `json:"image"`
 	ProgressMS int    `json:"progressMS"`
 }
+
+type MessageRequest struct {
+	Message string `json:"message"`
+}

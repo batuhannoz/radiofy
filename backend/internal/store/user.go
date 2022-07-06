@@ -22,7 +22,7 @@ func (u *UserStore) SaveUser(user model.User) *model.User {
 
 func (u *UserStore) GetUserById(userId uint64) *model.User {
 	var user model.User
-	u.connection.First(&user, userId)
+	u.connection.Where("id = ?", userId).First(&user)
 	return &user
 }
 

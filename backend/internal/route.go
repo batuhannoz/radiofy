@@ -56,10 +56,19 @@ func RegisterRoutes(config *config.Config, app *fiber.App) {
 
 		routesWithJWT := routes.Group("/", jwtMiddleware.Authorize)
 		{
-			routesWithJWT.Get("/club/list", appHandler.Clubs)
-			routesWithJWT.Post("/club/create", appHandler.CreateClub)
-			routesWithJWT.Get("/club/:id/song", websocket.New(appHandler.Listener))
-			routesWithJWT.Post("/club/:id/change", appHandler.ChangeSong)
+			clubRoutes := routesWithJWT.Group("/club")
+			{
+				clubRoutes.Get("/list", appHandler.Clubs)
+				clubRoutes.Post("/create", appHandler.CreateClub)
+				clubRoutes.Get("/:id/song", websocket.New(appHandler.Listener))
+				clubRoutes.Post("/:id/change", appHandler.ChangeSong)
+			}
+			chatRoutes := routesWithJWT.Group("/chat")
+			{
+				chatRoutes.Get("/global", websocket.New(appHandler.GlobalChat))
+				chatRoutes.Get("/club/:id", websocket.New(appHandler.ClubChat))
+				// TODO friends chat
+			}
 		}
 	}
 }

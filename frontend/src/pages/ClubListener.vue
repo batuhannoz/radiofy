@@ -7,37 +7,23 @@
 <script>
 
 import {mapActions, mapGetters} from "vuex";
-import axios from "axios";
 
 export default {
-  props:["id"],
+  props: ["id"],
   computed: {
     ...mapGetters("auth", ["getRadiofyToken"]),
     ...mapGetters("player", ["getDeviceID", "getSongName"])
   },
   methods: {
-    ...mapActions("player",["playSong"])
-  },
-  data() {
-    return {
-      interval: null
-    }
+    ...mapActions("player", ["playSong"])
   },
   mounted() {
-    this.interval = setInterval(() => {
-      axios.get("http://localhost:3000/club/"  + this.id + "/song", {
-        headers: {
-          "Authorization": this.getRadiofyToken
-        }
-      }).then((res) => {
-        if (res.data.songName !== this.getSongName) {
-          this.playSong({albumID: res.data.albumID, position: res.data.position-1, deviceID: this.getDeviceID})
-        }
-      })
-    }, 15000)
-  },
-  beforeUnmount() {
-    clearInterval(this.interval)
+    this.socket = new WebSocket("ws://localhost:3000/club/" + this.id + "/song"+"?token=" + this.getRadiofyToken)
+    this.socket.onmessage = (msg) => {
+      //create a JSON object
+      let jsonObject = JSON.parse(msg.data);
+      this.playSong({albumID: jsonObject.albumID, position: jsonObject.position - 1, deviceID: this.getDeviceID})
+    }
   }
 }
 </script>

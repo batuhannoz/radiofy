@@ -22,10 +22,8 @@ type ClubStore interface {
 }
 
 type Client struct {
-	id       string
-	ip       string
-	username string
-	ws       *websocket.Conn
+	ip string
+	ws *websocket.Conn
 }
 
 var Clients = make(map[uint64]*Client)
@@ -120,10 +118,8 @@ func (c *ClubService) Listener(ws *websocket.Conn) {
 		IsActive: true,
 	})
 	newClient := Client{
-		id:       "",
-		ip:       ws.RemoteAddr().String(),
-		username: "",
-		ws:       ws,
+		ip: ws.RemoteAddr().String(),
+		ws: ws,
 	}
 	Clients[user.Id] = &newClient
 	Clients[user.Id].ws.SetCloseHandler(func(code int, text string) error {

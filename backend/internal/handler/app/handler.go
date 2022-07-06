@@ -20,7 +20,8 @@ type ClubService interface {
 }
 
 type ChatService interface {
-	//
+	GlobalChat(ws *websocket.Conn)
+	ClubChat(ws *websocket.Conn)
 }
 
 type AuthService interface {
@@ -91,4 +92,12 @@ func (app *AppHandler) ChangeSong(ctx *fiber.Ctx) error {
 
 func (app *AppHandler) Listener(ws *websocket.Conn) {
 	app.clubService.Listener(ws)
+}
+
+func (app *AppHandler) GlobalChat(ws *websocket.Conn) {
+	app.ChatService.GlobalChat(ws)
+}
+
+func (app *AppHandler) ClubChat(ws *websocket.Conn) {
+	app.ChatService.ClubChat(ws)
 }

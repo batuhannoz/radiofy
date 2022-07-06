@@ -10,6 +10,7 @@ import {mapActions} from 'vuex';
 
 export default {
   methods: {
+    ...mapActions("user", ["refreshUser"]),
     ...mapActions("auth", ["setAccessToken", "setRadiofyToken"]),
     ...mapActions("player", ["setDeviceID", "refreshPlayer"]),
     token() {
@@ -22,7 +23,7 @@ export default {
       console.log(params)
       axios
           .get(
-              "http://localhost:3000/complete_auth",
+              "http://192.168.1.127:3000/complete_auth",
               {
                 params: {
                   code: params.code,
@@ -38,6 +39,7 @@ export default {
             this.setAccessToken(res.data.accessToken)
             setAccessToken(res.data.accessToken)
             this.refreshPlayer()
+            this.refreshUser()
             getAvailableDevices().then((res) => {
               this.setDeviceID(res.devices[0].id)
             })

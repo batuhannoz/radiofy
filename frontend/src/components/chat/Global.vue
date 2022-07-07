@@ -57,7 +57,14 @@ export default {
   mounted() {
     this.GlobalChatSocket = new WebSocket("ws://192.168.1.127:3000/chat/global" + "?token=" + this.getRadiofyToken)
     this.GlobalChatSocket.onmessage = (msg) => {
-      this.ReceviedMessages.push(JSON.parse(msg.data))
+      let jsonObject = JSON.parse(msg.data);
+      if (jsonObject.type === "ping") {
+        let pong = {
+          "type": "pong"
+        }
+        this.wsConn.send(pong)
+      }
+      this.ReceviedMessages.push(jsonObject)
     }
   },
   methods: {

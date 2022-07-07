@@ -57,3 +57,7 @@ func (c *ClubStore) ChangeClubSong(clubSong *model.ClubSong) *model.ClubSong {
 func (c *ClubStore) DeactivateListener(userID uint64) {
 	c.connection.Model(&model.Listener{}).Where("user_id = ?", userID).UpdateColumn("is_active", false)
 }
+
+func (c *ClubStore) DeactivateClub(clubID uint64) {
+	c.connection.Model(&model.Club{}).Where("id = ?", clubID).UpdateColumn("is_active", false)
+}

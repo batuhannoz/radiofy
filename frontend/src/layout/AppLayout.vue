@@ -2,7 +2,7 @@
   <div class="flex-col flex h-full w-full">
     <app-header class="h-[5.3rem] flex-none col"/>
     <div class="flex flex-nowrap">
-      <active-users class="w-[16.5rem] flex-none hidden xl:block" style="height: calc(100vh - 5.3rem)"/>
+      <active-users v-if="this.getRadiofyToken !== ''" class="w-[16.5rem] flex-none hidden xl:block" style="height: calc(100vh - 5.3rem)"/>
       <div class="flex flex-col flex-grow" style="min-width: 50rem">
         <router-view style="height: calc(100vh - 5.3rem - 92px)"/>
         <player style="height: 92px" class="w-full"/>

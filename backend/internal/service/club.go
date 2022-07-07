@@ -19,6 +19,7 @@ type ClubStore interface {
 	CurrentSongByClubID(clubID int) *model.ClubSong
 	ChangeClubSong(clubSong *model.ClubSong) *model.ClubSong
 	DeactivateListener(listenerID uint64)
+	DeactivateClub(clubID uint64)
 }
 
 type Client struct {
@@ -88,25 +89,37 @@ func (c *ClubService) CurrentSong(ctx *fiber.Ctx) *app.PlaybackResponse {
 	}
 }
 
-func (c *ClubService) ChangeSong(ctx *fiber.Ctx, request *app.PlaybackRequest) error {
-	user := ctx.Locals("user").(*model.User)
+func (c *ClubService) ChangeSong(ws *websocket.Conn) {
+	user := ws.Locals("user").(*model.User)
 	club := c.ClubStore.ClubByOwnerID(user.Id)
-	if strconv.Itoa(club.Id) != ctx.Params("id") {
+	if strconv.Itoa(club.Id) != ws.Params("id") {
 		fmt.Println("wrong request")
 	}
-	c.ClubStore.ChangeClubSong(&model.ClubSong{
-		Id:         0,
-		ClubID:     club.Id,
-		AlbumID:    request.AlbumID,
-		Position:   request.Position,
-		SongID:     request.SongID,
-		SongName:   request.SongName,
-		ArtistName: request.ArtistName,
-		Image:      request.Image,
-		ProgressMS: request.ProgressMS,
+	ws.SetCloseHandler(func(code int, text string) error {
+		ws.Close()
+		c.ClubStore.DeactivateClub(uint64(club.Id))
+		return nil
 	})
-	c.UpdateListenersPlayback(user.Id, request)
-	return nil
+	for {
+		var request app.PlaybackRequest
+		err := ws.ReadJSON(&request)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		c.ClubStore.ChangeClubSong(&model.ClubSong{
+			Id:         0,
+			ClubID:     club.Id,
+			AlbumID:    request.AlbumID,
+			Position:   request.Position,
+			SongID:     request.SongID,
+			SongName:   request.SongName,
+			ArtistName: request.ArtistName,
+			Image:      request.Image,
+			ProgressMS: request.ProgressMS,
+		})
+		c.UpdateListenersPlayback(user.Id, &request)
+	}
 }
 
 func (c *ClubService) Listener(ws *websocket.Conn) {

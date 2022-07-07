@@ -19,3 +19,11 @@ type PlaybackRequest struct {
 type MessageRequest struct {
 	Message string `json:"message"`
 }
+
+type CurrentListenersRequest struct {
+	Position   int    `json:"position"`
+	AlbumID    string `json:"albumID"`
+	ArtistName string `json:"artistName"`
+	SongName   string `json:"songName"`
+	SongID     string `json:"songID"`
+}

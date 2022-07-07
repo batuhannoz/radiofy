@@ -5,20 +5,34 @@
 <script>
 import searchSong from "@/components/search/SearchSong";
 import {mapGetters} from "vuex";
-import axios from "axios";
 export default {
   props: ["id"],
   components: {
     searchSong
   },
+  mounted() {
+    this.wsConn = new WebSocket("ws://localhost:3000/club/" + this.id + "/change"+"?token=" + this.getRadiofyToken)
+    this.wsConn.onmessage = (msg) => {
+      let jsonObject = JSON.parse(msg.data);
+      if (jsonObject.type === "ping") {
+        let pong = {
+          "type": "pong"
+        }
+        this.wsConn.send(pong)
+      }
+    }
+  },
   data() {
+    return {
+      wsConn: null
+    }
   },
   computed: {
+    ...mapGetters("auth", ["getRadiofyToken"]),
+    ...mapGetters("player", ["getSongID", "getSongName", "getArtistName", "getImage", "getProgressMS", "getAlbumID", "getPosition"]),
     currentSong() {
       return this.getSongID
     },
-    ...mapGetters("auth", ["getRadiofyToken"]),
-    ...mapGetters("player", ["getSongID", "getSongName", "getArtistName", "getImage", "getProgressMS", "getAlbumID", "getPosition"])
   },
   watch: {
     currentSong(songID) {
@@ -32,11 +46,7 @@ export default {
         "image": this.getImage,
         "progressMS": this.getProgressMS,
       }
-      axios.post("http://192.168.1.127:3000/club/" + this.id + "/change", request, {
-        headers: {
-          "Authorization": this.getRadiofyToken
-        }
-      })
+      this.wsConn.send(JSON.stringify(request))
     }
   },
 }

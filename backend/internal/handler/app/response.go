@@ -42,3 +42,13 @@ type MessageResponse struct {
 	DisplayName string `json:"displayName"`
 	Message     string `json:"message"`
 }
+
+type CurrentListenersResponse struct {
+	Position    int    `json:"position"`
+	AlbumID     string `json:"albumID"`
+	DisplayName string `json:"displayName"`
+	Image       string `json:"image"`
+	ArtistName  string `json:"artistName"`
+	SongName    string `json:"songName"`
+	SongID      string `json:"songID"`
+}

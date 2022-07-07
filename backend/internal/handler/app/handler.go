@@ -8,20 +8,19 @@ import (
 )
 
 type UserService interface {
-	//
+	CurrentListeners(ws *websocket.Conn)
 }
 
 type ClubService interface {
 	Clubs() *[]ClubsResponse
 	CreateClub(ctx *fiber.Ctx, ClubRequest CreateClubRequest) *CreateClubResponse
 	CurrentSong(ctx *fiber.Ctx) *PlaybackResponse
-	ChangeSong(ctx *fiber.Ctx, SongRequest *PlaybackRequest) error
+	ChangeSong(ws *websocket.Conn)
 	Listener(ws *websocket.Conn)
 }
 
 type ChatService interface {
 	GlobalChat(ws *websocket.Conn)
-	ClubChat(ws *websocket.Conn)
 }
 
 type AuthService interface {
@@ -32,7 +31,7 @@ type AuthService interface {
 type AppHandler struct {
 	userService UserService
 	clubService ClubService
-	ChatService ChatService
+	chatService ChatService
 	authService AuthService
 }
 
@@ -76,18 +75,8 @@ func (app *AppHandler) CurrentSong(c *fiber.Ctx) error {
 	return c.Status(http.StatusOK).JSON(songPlayback)
 }
 
-func (app *AppHandler) ChangeSong(ctx *fiber.Ctx) error {
-	var SongRequest PlaybackRequest
-	err := ctx.BodyParser(&SongRequest)
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = app.clubService.ChangeSong(ctx, &SongRequest)
-	if err != nil {
-		fmt.Println(err)
-	}
-	ctx.Status(http.StatusOK)
-	return nil
+func (app *AppHandler) ChangeSong(ws *websocket.Conn) {
+	app.clubService.ChangeSong(ws)
 }
 
 func (app *AppHandler) Listener(ws *websocket.Conn) {
@@ -95,9 +84,9 @@ func (app *AppHandler) Listener(ws *websocket.Conn) {
 }
 
 func (app *AppHandler) GlobalChat(ws *websocket.Conn) {
-	app.ChatService.GlobalChat(ws)
+	app.chatService.GlobalChat(ws)
 }
 
-func (app *AppHandler) ClubChat(ws *websocket.Conn) {
-	app.ChatService.ClubChat(ws)
+func (app *AppHandler) Listeners(ws *websocket.Conn) {
+	app.userService.CurrentListeners(ws)
 }

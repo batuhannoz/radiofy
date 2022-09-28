@@ -1,6 +1,5 @@
 # radiofy
-website where you can listen to music and talk with your friends by connecting with spotify
-
+Create club. Invite people. Start sharing your music.
 
 ```bash
 sudo chmod 666 /var/run/docker.sock

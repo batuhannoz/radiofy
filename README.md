@@ -1,5 +1,5 @@
 # radiofy
-
+website where you can listen to music and talk with your friends by connecting with spotify
 
 
 ```bash
